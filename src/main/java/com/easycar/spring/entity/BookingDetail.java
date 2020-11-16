@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class BookingDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long detailId;
+    private double detailId;
     private String basis;
     private String waiverSlip;
     private int amount;
@@ -18,4 +18,12 @@ public class BookingDetail {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="cr_Id",referencedColumnName = "regNumber",nullable = false)
     private Car car;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="d_Id",referencedColumnName = "did")
+    private Driver driver;
+
+
+    @OneToOne(mappedBy = "bookingDetail",cascade = CascadeType.ALL)
+    private Return _return;
 }

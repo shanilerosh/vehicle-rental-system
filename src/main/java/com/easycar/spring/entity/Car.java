@@ -25,7 +25,11 @@ public class Car {
     private double monthlyRate;
     private int freeKmPerMonth;
     private double pricePerExtraKm;
+    private String state;
 
     @OneToOne(mappedBy = "car",cascade = CascadeType.ALL)
     private BookingDetail bookingDetail;
+
+    @OneToMany(mappedBy = "car")
+    private List<Maintanance> maintanances=new ArrayList<>();
 }
