@@ -24,4 +24,12 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
     List<Booking> bookings=new ArrayList<>();
+
+    public Customer(String email, String name, String address, String document, String password) {
+        this.email = email;
+        this.name = name;
+        this.address = address;
+        this.document = document;
+        this.password = password;
+    }
 }

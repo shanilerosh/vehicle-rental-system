@@ -16,4 +16,9 @@ public class WebAppConfig{
     public ModelMapper getMapper(){
         return new ModelMapper();
     }
+
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver canBeCalledAnything(){
+        return new CommonsMultipartResolver();
+    }
 }
