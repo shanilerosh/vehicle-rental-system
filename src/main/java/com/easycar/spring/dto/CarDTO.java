@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @ToString
 public class CarDTO {
+    private int reg;
     private String regNumber;
     private String brand;
     private String type;
@@ -21,4 +22,5 @@ public class CarDTO {
     private double monthlyRate;
     private int freeKmPerMonth;
     private double pricePerExtraKm;
+    private String state;
 }

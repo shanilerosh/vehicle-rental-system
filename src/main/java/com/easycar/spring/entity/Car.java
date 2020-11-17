@@ -16,6 +16,8 @@ import java.util.List;
 @ToString
 public class Car {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int reg;
     private String regNumber;
     private String brand;
     private String type;
@@ -27,9 +29,9 @@ public class Car {
     private double pricePerExtraKm;
     private String state;
 
-    @OneToOne(mappedBy = "car",cascade = CascadeType.ALL)
-    private BookingDetail bookingDetail;
+    @OneToMany(mappedBy = "car",cascade = CascadeType.ALL)
+    private List<BookingDetail> bookingDetails=new ArrayList<>();
 
-    @OneToMany(mappedBy = "car")
-    private List<Maintanance> maintanances=new ArrayList<>();
+//    @OneToMany(mappedBy = "car")
+//    private List<Maintanance> maintanances=new ArrayList<>();
 }

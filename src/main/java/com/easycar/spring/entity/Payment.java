@@ -18,7 +18,7 @@ public class Payment {
     private String dateOfPayment;
     private double amount;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "r_id",referencedColumnName = "rid",nullable = false)
+    @OneToOne()
+    @JoinColumn(name = "r_id",referencedColumnName = "rid")
     private Return _return;
 }

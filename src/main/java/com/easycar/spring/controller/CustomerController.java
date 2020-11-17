@@ -18,7 +18,7 @@ import java.net.URI;
 public class CustomerController {
 
     @Autowired
-    CustomerService service;
+    private CustomerService service;
 
     @PostMapping
     public ResponseEntity addCustomer(@RequestBody CustomerDTO customerDTO) {

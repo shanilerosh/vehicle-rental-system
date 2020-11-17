@@ -17,7 +17,7 @@ public class Maintanance {
     public String receivingdate;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cr_id",referencedColumnName = "regNumber",nullable = false)
-    private Car car;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "cr_id",referencedColumnName = "regNumber",nullable = false)
+//    private Car car;
 }

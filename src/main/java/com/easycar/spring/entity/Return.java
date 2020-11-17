@@ -17,10 +17,10 @@ public class Return {
     String dteOfReturn;
     double damages;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "bd_col",referencedColumnName = "detailId")
     private  BookingDetail bookingDetail;
 
-    @OneToOne(mappedBy = "_return")
+    @OneToOne(mappedBy = "_return",cascade = CascadeType.ALL)
     private Payment payment;
 }

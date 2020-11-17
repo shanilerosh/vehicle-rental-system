@@ -2,6 +2,7 @@ package com.easycar.spring.entity;
 
 import lombok.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -12,12 +13,12 @@ import javax.persistence.OneToOne;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Driver {
+public class    Driver {
     @Id
     String did;
     String driverName;
     String driverStatus;
 
-    @OneToOne(mappedBy = "driver")
+    @OneToOne(mappedBy = "driver",cascade = CascadeType.ALL)
     private  BookingDetail bookingDetail;
 }
