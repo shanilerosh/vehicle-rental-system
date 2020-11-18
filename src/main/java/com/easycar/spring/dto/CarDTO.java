@@ -13,14 +13,39 @@ import javax.persistence.Entity;
 @ToString
 public class CarDTO {
     private int reg;
-    private String regNumber;
+    private String name;
     private String brand;
-    private String type;
-    private int psngNumber;
-    private double dailyRate;
-    private int freeKmPerDay;
-    private double monthlyRate;
-    private int freeKmPerMonth;
-    private double pricePerExtraKm;
-    private String state;
+    private String carType;
+    private String registrationNumb;
+    private Double mnthlyRate;
+    private Double dlyRate;
+    private Integer freeKmPerDay;
+    private Integer freeKmPerMonth;
+    private Double pricePerExtrakm;
+    private Integer nmberOfPssngers;
+    private String color;
+    private String carState;
+    private String interiorImge;
+    private String frntImg;
+    private String sideImg;
+    private String bckImg;
+
+    public CarDTO(String name, String brand, String carType, String registrationNumb, Double mnthlyRate, Double dlyRate, Integer freeKmPerDay, Integer freeKmPerMonth, Double pricePerExtrakm, Integer nmberOfPssngers, String color, String carState, String interiorImge, String frntImg, String sideImg, String bckImg) {
+        this.name = name;
+        this.brand = brand;
+        this.carType = carType;
+        this.registrationNumb = registrationNumb;
+        this.mnthlyRate = mnthlyRate;
+        this.dlyRate = dlyRate;
+        this.freeKmPerDay = freeKmPerDay;
+        this.freeKmPerMonth = freeKmPerMonth;
+        this.pricePerExtrakm = pricePerExtrakm;
+        this.nmberOfPssngers = nmberOfPssngers;
+        this.color = color;
+        this.carState = carState;
+        this.interiorImge = interiorImge;
+        this.frntImg = frntImg;
+        this.sideImg = sideImg;
+        this.bckImg = bckImg;
+    }
 }

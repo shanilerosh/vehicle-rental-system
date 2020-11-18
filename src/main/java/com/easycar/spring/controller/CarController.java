@@ -9,12 +9,13 @@ import com.easycar.spring.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("api/v1/car")
 public class CarController {
 
@@ -23,9 +24,27 @@ public class CarController {
     @Autowired
     private CarService carService;
 
-    @PostMapping
-    public ResponseEntity addCar(@RequestBody Car car) {
-        carRepo.save(car);
-        return new ResponseEntity(new StandardResponse(200,"Success",null), HttpStatus.CREATED);
+    @PostMapping(path = "/savecar")
+    public ResponseEntity addCar(@RequestParam("carName") String carName,@RequestParam("carType") String carType,
+                                 @RequestParam("carState") String carState, @RequestParam("carBrand") String carBrand, @RequestParam("carRegNumber") String carRegNumber,
+                                 @RequestParam("carMonthyRate") String carMonthyRate, @RequestParam("carDailyRate") String carDailyRate,
+                                 @RequestParam("carFreeKmPerDay") String carFreeKmPerDay, @RequestParam("carFreeKmPerMonth") String carFreeKmPerMonth,
+                                 @RequestParam("carPricePerExtraKm") String carPricePerExtraKm, @RequestParam("carNumberOfPassenger") String carNumberOfPassenger,
+                                 @RequestParam("carColor") String carColor, @RequestParam("carImageInterior") MultipartFile carImageInterior,
+                                 @RequestParam("carImageFront") MultipartFile carImageFront,@RequestParam("carImageSide") MultipartFile carImageSide,@RequestParam("carImageBack") MultipartFile carImageBack){
+
+        Object[] dataSet = {
+                carName, carBrand, carRegNumber, Double.parseDouble(carMonthyRate), Double.parseDouble(carDailyRate), Integer.parseInt(carFreeKmPerDay),
+                Integer.parseInt(carFreeKmPerMonth), Double.parseDouble(carPricePerExtraKm), Integer.parseInt(carNumberOfPassenger), carColor, carImageInterior, carImageFront,
+                carImageSide, carImageBack,carType,carState
+        };
+        carService.addCar(dataSet);
+        return new ResponseEntity(new StandardResponse(200,"Success",null),HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity getAll(){
+        List<CarDTO> allCars = carService.getAllCars();
+        return new ResponseEntity(new StandardResponse(200,"Success",allCars),HttpStatus.CREATED);
     }
 }
