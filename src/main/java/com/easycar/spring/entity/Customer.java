@@ -14,22 +14,23 @@ import java.util.List;
 @Entity
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int cid;
     private String email;
     private String name;
     private String address;
     private String document;
     private String password;
+    private String salt;
+
 
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
     List<Booking> bookings=new ArrayList<>();
 
-    public Customer(String email, String name, String address, String document, String password) {
+    public Customer(String email, String name, String address, String document, String password,String salt) {
         this.email = email;
         this.name = name;
         this.address = address;
         this.document = document;
         this.password = password;
+        this.salt=salt;
     }
 }

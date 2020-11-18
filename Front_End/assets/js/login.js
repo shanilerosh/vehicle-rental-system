@@ -13,15 +13,87 @@
             processData:false,
             success: function (res) {
                 console.log(res);
-                $('.signupstatus').append(
-                    `<div class="alert alert-dismissible alert-success">
+                if(res.msg=="Success"){
+                    $('.signupstatus').append(
+                        `<div class="alert alert-dismissible alert-success">
   <button type="button" class="close" data-dismiss="alert">&times;</button>
   <strong>Successfully created</strong> You have successfully registered please login to enjoy our service</a>.
-</div>`
-                )
+</div>`)} else{
+
+                    $('.signupstatus').append(
+                        `<div class="alert alert-dismissible alert-danger">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Error ! </strong> ${res.data}</div>`)
+                }
             }
         })
  }
+
+
+ function checkLoginDetail() {
+    const loginEmail = $('#loginEmail').val();
+    const loginPass = $('#loginPassword').val();
+
+
+     function validateLoginFields() {
+         $('.loginEmailVal').children().remove();
+         $('.loginPassVal').children().remove();
+
+        if(loginEmail.trim()==''){
+            $('.loginEmailVal').append('<div class="alert alert-dismissible alert-danger mt-2">\n' +
+                '  <button type="button" class="close" data-dismiss="alert">&times;</button>\n' +
+                '  <strong> Email is Empty</strong>It is compulsory to provide your email to proceed.\n' +
+                '</div>');
+            return false;
+        }
+
+         if(loginPass.trim()==''){
+             $('.loginPassVal').append('<div class="alert alert-dismissible alert-danger mt-2">\n' +
+                 '  <button type="button" class="close" data-dismiss="alert">&times;</button>\n' +
+                 '  <strong> Password is Empty </strong>It is compulsory to provide your Password to proceed.\n' +
+                 '</div>');
+             return false;
+         }
+         return true;
+     }
+
+
+     if(!validateLoginFields()){
+         return;
+     }
+
+     $('.logingVal').children().remove();
+
+     $.ajax({
+                url: 'http://localhost:8080/demo/api/v1/user/checkuser',
+                type: 'GET',
+                dataType: 'json',
+                headers : {
+                    username: loginEmail,
+                    password: loginPass,
+                },
+                success: function (res) {
+                    if(res.code==500) {
+                        $('.logingVal').append(
+                            `<div class="alert alert-dismissible alert-danger">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Error ⚠ </strong>${res.data} 
+</div>`)
+
+                    }else {
+                        $('.logingVal').append(
+                            `<div class="alert alert-dismissible alert-success">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Success ☺ </strong> You have successfully Logged in
+</div>`)
+                    }
+                }
+         })
+
+ }
+
+
+
 
 
  const validateFields = () => {
@@ -82,7 +154,6 @@
              '</div>')
          return false;
      }
-
      return true;
  }
 

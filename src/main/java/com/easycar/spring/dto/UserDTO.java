@@ -1,4 +1,4 @@
-package com.easycar.spring.entity;
+package com.easycar.spring.dto;
 
 import lombok.*;
 
@@ -13,10 +13,7 @@ import javax.persistence.Id;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+public class UserDTO {
     private int id;
     private String role;
     private String partyId;
@@ -24,7 +21,7 @@ public class User {
     private String password;
     private String salt;
 
-    public User(String role, String partyId, String userName, String password, String salt) {
+    public UserDTO(String role, String partyId, String userName, String password, String salt) {
         this.role = role;
         this.partyId = partyId;
         this.userName = userName;

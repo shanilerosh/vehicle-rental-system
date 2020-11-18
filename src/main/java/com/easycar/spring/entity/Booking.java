@@ -24,7 +24,7 @@ public class Booking {
     @Column(nullable = false)
     private String _date;
     @ManyToOne()
-    @JoinColumn(name = "custId", referencedColumnName = "cid")
+    @JoinColumn(name = "cemail", referencedColumnName = "email")
     private Customer customer;
 
     @OneToMany(mappedBy = "booking",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
