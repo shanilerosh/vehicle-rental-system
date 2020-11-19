@@ -46,12 +46,14 @@ public class CarServiceImpl implements CarService {
         MultipartFile bckImge= (MultipartFile) dataSet[13];
         String carType= (String) dataSet[14];
         String carState= (String) dataSet[15];
+        String transmissionType= (String) dataSet[16];
+        String fuelType= (String) dataSet[17];
         String interrPath="/home/shanil/Work Related Practice_Final Tech Wise/Java/CarRentalSystem_EasyCar/Front_End/assets/images/customer/"+interiorImge.getOriginalFilename();
         String frntPath="/home/shanil/Work Related Practice_Final Tech Wise/Java/CarRentalSystem_EasyCar/Front_End/assets/images/customer/"+frntImge.getOriginalFilename();
         String sidePath="/home/shanil/Work Related Practice_Final Tech Wise/Java/CarRentalSystem_EasyCar/Front_End/assets/images/customer/"+sideImge.getOriginalFilename();
         String backPath="/home/shanil/Work Related Practice_Final Tech Wise/Java/CarRentalSystem_EasyCar/Front_End/assets/images/customer/"+bckImge.getOriginalFilename();
 
-        Car carByRegistrationNumb = carRepo.findCarByRegistrationNumb(reg);
+        Car carByRegistrationNumb = carRepo.findCarsByRegistrationNumb(reg);
 
         if(carByRegistrationNumb!=null){
             throw new RuntimeException("Car with the Registration Number "+reg+" already exists.Please try again later");
@@ -64,7 +66,7 @@ public class CarServiceImpl implements CarService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Car car = new Car(name, brand, carType, reg, mnthlyRate, dlyRate, freeKmPerDay, freeKmPerMonth, pricePerExtrakm, nmberOfPssngers, color, carState, interrPath, frntPath, sidePath, backPath);
+        Car car = new Car(name, brand, carType, reg, mnthlyRate, dlyRate, freeKmPerDay, freeKmPerMonth, pricePerExtrakm, nmberOfPssngers, color, carState, interrPath, frntPath, sidePath, backPath,transmissionType,fuelType);
         carRepo.save(car);
     }
 
@@ -76,7 +78,14 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public CarDTO getCarByReg(String reg) {
-        Car carByRegistrationNumb = carRepo.findCarByRegistrationNumb(reg);
+        Car carByRegistrationNumb = carRepo.findCarsByRegistrationNumb(reg);
         return mapper.map(carByRegistrationNumb,CarDTO.class);
+    }
+
+    @Override
+    public CarDTO getCarByPk(String reg) {
+        Car carByReg = carRepo.findCarByReg(Integer.parseInt(reg));
+        System.out.println(carByReg.getBrand());
+        return mapper.map(carByReg,CarDTO.class);
     }
 }

@@ -11,12 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
+@CrossOrigin
 @RequestMapping("api/v1/booking")
 public class BookingController {
 
@@ -38,9 +37,10 @@ public class BookingController {
     }
 
     @PostMapping(path = "/bookingdetail")
-    public ResponseEntity addBooking(@RequestBody BookingDetail bookingDetail){
-        System.out.println(bookingDetail);
-        detailsRepo.save(bookingDetail);
+    public ResponseEntity addBooking(@RequestParam("bcktLocation") String bcktLocation, @RequestParam("bcktPckUp") String bcktPckUp,
+                                     @RequestParam("driver") String driver, @RequestParam("vehicleId") String vehicleId,
+                                     @RequestParam("bcktDoc") MultipartFile bcktDoc){
+
         return new ResponseEntity(new StandardResponse(200,"Success",null),HttpStatus.CREATED);
     }
 

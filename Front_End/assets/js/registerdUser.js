@@ -1,3 +1,7 @@
+let lisOfBookings=[];
+$('#confAlert').alert('close');
+let listOfAllCars='';
+
 loadCarForRegsitered()
 let b=10;
 function loadCarForRegsitered() {
@@ -8,6 +12,7 @@ function loadCarForRegsitered() {
         type: 'get',
         contentType: 'application/json',
         success: function (res) {
+            listOfAllCars=res.data;
             let counter=0;
             for(let resp of res.data) {
                 const imgSrc=resp.frntImg.slice(90,resp.frntImg.length);
@@ -31,25 +36,34 @@ function loadCarForRegsitered() {
 $('#carView').append(`</div>`);
 
 
-
+let crid='';
+let carBrand='';
+let color='';
+let price='';
+let carName=''
 function viewDetail(evt) {
     const selectedReg = evt.parentElement.children[1].innerHTML;
-    console.log(selectedReg)
+
     $.ajax({
         url: 'http://localhost:8080/demo/api/v1/car/' + selectedReg,
         type: 'get',
         contentType: 'application/json',
         success: function (res) {
-            console.log(res);
+            crid=res.data.reg;
+            carBrand=res.data.brand;
+            color=res.data.brand;
+            price=res.data.mnthlyRate;
+            price=res.data.name;
+            //Change this to field in the deposit
+            depAmount=res.data.mnthlyRate;
             $('#model').children().remove();
-            console.log(res);
             console.log(res.data.frntImg);
             const frntImg=res.data.frntImg.slice(90,res.data.frntImg.length);
             const bckImg=res.data.bckImg.slice(90,res.data.bckImg.length);
             const sideImg=res.data.sideImg.slice(90,res.data.sideImg.length);
             const interiorImge=res.data.frntImg.slice(90,res.data.interiorImge.length);
             $('#model').append(`
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<div class="modal fade small" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -85,26 +99,94 @@ function viewDetail(evt) {
     <span class="sr-only">Next</span>
   </a>
 </div>
-            
               <div class="modal-body">
-              <div class="row">
-                <div class="col-4">Name</div>
-                <div class="col-4">Age</div>
-                <div class="col-4">Salary</div>
-                <div class="col-4">ad</div>
+              <div class="row border-1">
+                <div class="col-3">Brand: ${res.data.brand}</div>
+                <div class="col-3">Name: ${res.data.name}</div>
+                <div class="col-3">Color :${res.data.color}</div>
+                <div class="col-3">Price(Daily): ${res.data.dlyRate}</div>
+              </div>
+               <div class="row">
+                <div class="col-4">Passengers: ${res.data.nmberOfPssngers}</div>
+                <div class="col-4">Registration: ${res.data.registrationNumb}</div>
                </div>
+               <hr />
 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="confirmToBucket(crid,depAmount,color,price,carBrand,name)">Add to Cart</button>
             </div>
         </div>
     </div>
 </div>
 `)
             $('#myModal').modal('show');
-
         }
     })
+}
+
+
+function confirmToBucket(crid,depAmount,color,price,carBrand,name) {
+    $('#myModal').modal('hide');
+    lisOfBookings.push({
+        rid:crid,
+        dep:depAmount,
+        col:color,
+        prc:price,
+        brand:carBrand
+    });
+    loadAllDataToBucket()
+}
+
+
+function loadAllDataToBucket() {
+    $('#bucketTbody').children().remove();
+    for (let i = 0; i <lisOfBookings.length; i++) {
+        $('#bucketTbody').append(`  <tr><th scope="row">${lisOfBookings[i].rid}</th>
+      <td>${lisOfBookings[i].dep}</td>
+      <td>${lisOfBookings[i].col}</td>
+      <td>${lisOfBookings[i].price}</td></tr>`)
+        $($('#bucketTbody').children()[i]).click((e)=>{
+            console.log($(e.currentTarget).children().get(1).innerHTML);
+            $('#bcktReg').val($(e.currentTarget).children().get(1).innerHTML);
+            $('.bucketVal').children().remove();
+            $('.bucketVal').append(`<div class="alert alert-info" role="alert">
+  <h5 class="alert-heading">Waiver Deposit</h5>
+  <p>In order to confirm the booking. You must upload an image of the bank slip of the waiver deposit of Rs</p>
+</div>`)
+
+        })
+    }
+}
+
+
+
+
+function finalizeBooking() {
+    if(validateBookingFields()) {
+
+    }
+
+    const myForm = new FormData($('#bcktForm')[0]);
+    const checkBox=$('#bcktDriver').is(":checked");
+    const crid=$('#bcktReg').val();
+    myForm.append('customer','c001');
+    myForm.append('driver',checkBox);
+    myForm.append('vehicleId',crid);
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/booking//bookingdetail',
+        type: 'post',
+        data: myForm,
+        contentType: false,
+        processData: false,
+        success: function (res) {
+
+        }
+    });
+
+}
+
+function validateBookingFields() {
+
 }

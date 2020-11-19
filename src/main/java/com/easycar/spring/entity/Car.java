@@ -35,8 +35,10 @@ public class Car {
     private String frntImg;
     private String sideImg;
     private String bckImg;
+    private String transmissionType;
+    private String fuelType;
 
-    public Car(String name, String brand, String carType, String registrationNumb, Double mnthlyRate, Double dlyRate, Integer freeKmPerDay, Integer freeKmPerMonth, Double pricePerExtrakm, Integer nmberOfPssngers, String color, String carState, String interiorImge, String frntImg, String sideImg, String bckImg) {
+    public Car(String name, String brand, String carType, String registrationNumb, Double mnthlyRate, Double dlyRate, Integer freeKmPerDay, Integer freeKmPerMonth, Double pricePerExtrakm, Integer nmberOfPssngers, String color, String carState, String interiorImge, String frntImg, String sideImg, String bckImg, String transmissionType, String fuelType) {
         this.name = name;
         this.brand = brand;
         this.carType = carType;
@@ -53,7 +55,10 @@ public class Car {
         this.frntImg = frntImg;
         this.sideImg = sideImg;
         this.bckImg = bckImg;
+        this.transmissionType = transmissionType;
+        this.fuelType = fuelType;
     }
+
     @OneToMany(mappedBy = "car",cascade = CascadeType.ALL)
     private List<BookingDetail> bookingDetails=new ArrayList<>();
 

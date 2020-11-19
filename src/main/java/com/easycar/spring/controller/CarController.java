@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,12 +32,14 @@ public class CarController {
                                  @RequestParam("carFreeKmPerDay") String carFreeKmPerDay, @RequestParam("carFreeKmPerMonth") String carFreeKmPerMonth,
                                  @RequestParam("carPricePerExtraKm") String carPricePerExtraKm, @RequestParam("carNumberOfPassenger") String carNumberOfPassenger,
                                  @RequestParam("carColor") String carColor, @RequestParam("carImageInterior") MultipartFile carImageInterior,
-                                 @RequestParam("carImageFront") MultipartFile carImageFront,@RequestParam("carImageSide") MultipartFile carImageSide,@RequestParam("carImageBack") MultipartFile carImageBack){
+                                 @RequestParam("carImageFront") MultipartFile carImageFront,@RequestParam("carImageSide") MultipartFile carImageSide,@RequestParam("carImageBack") MultipartFile carImageBack,
+                                @RequestParam("transmissionType") String transmissionType, @RequestParam("fuelType") String fuelType
+    ){
 
         Object[] dataSet = {
                 carName, carBrand, carRegNumber, Double.parseDouble(carMonthyRate), Double.parseDouble(carDailyRate), Integer.parseInt(carFreeKmPerDay),
                 Integer.parseInt(carFreeKmPerMonth), Double.parseDouble(carPricePerExtraKm), Integer.parseInt(carNumberOfPassenger), carColor, carImageInterior, carImageFront,
-                carImageSide, carImageBack,carType,carState
+                carImageSide, carImageBack,carType,carState,transmissionType,fuelType
         };
         carService.addCar(dataSet);
         return new ResponseEntity(new StandardResponse(200,"Success",null),HttpStatus.CREATED);
@@ -53,5 +56,12 @@ public class CarController {
         System.out.println(reg);
         CarDTO carByReg = carService.getCarByReg(reg);
         return new ResponseEntity(new StandardResponse(200,"Success",carByReg),HttpStatus.CREATED);
+    }
+
+
+    @GetMapping(path = "/getbucket/{dataset}")
+    public ResponseEntity findCarToBucket(@PathVariable String reg){
+        System.out.println(reg);
+        return new ResponseEntity(new StandardResponse(200,"Success",carService.getCarByPk(reg)),HttpStatus.CREATED);
     }
 }

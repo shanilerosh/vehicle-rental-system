@@ -31,17 +31,17 @@ function saveCar() {
     // }
 
     let formData = new FormData($('#carAddForm')[0]);
-    $.ajax({
-        url: 'http://localhost:8080/demo/api/v1/car/savecar',
-        type: 'post',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (res) {
-            console.log(res);
-            loadCar();
-        }
-    });
+        $.ajax({
+            url: 'http://localhost:8080/demo/api/v1/car/savecar',
+            type: 'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                console.log(res);
+                loadCar();
+            }
+        });
 }
 
 
