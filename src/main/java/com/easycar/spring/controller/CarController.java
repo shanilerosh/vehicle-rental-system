@@ -47,4 +47,11 @@ public class CarController {
         List<CarDTO> allCars = carService.getAllCars();
         return new ResponseEntity(new StandardResponse(200,"Success",allCars),HttpStatus.CREATED);
     }
+
+    @GetMapping(path = "/{reg}")
+    public ResponseEntity findCarByReg(@PathVariable String reg){
+        System.out.println(reg);
+        CarDTO carByReg = carService.getCarByReg(reg);
+        return new ResponseEntity(new StandardResponse(200,"Success",carByReg),HttpStatus.CREATED);
+    }
 }

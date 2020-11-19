@@ -5,5 +5,5 @@ import com.easycar.spring.entity.Driver;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CarRepo extends JpaRepository<Car,Integer> {
-    public Car findCarByRegistrationNumb(String reg);
+    public Car findCarsByRegistrationNumb(String reg);
 }

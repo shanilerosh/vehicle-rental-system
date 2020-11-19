@@ -8,4 +8,5 @@ import java.util.List;
 public interface CarService {
     void addCar(Object[] dataSet);
     List<CarDTO> getAllCars();
+    CarDTO getCarByReg(String reg);
 }
