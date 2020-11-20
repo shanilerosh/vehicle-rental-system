@@ -127,8 +127,41 @@
 
 
 <div id="displayCars">
-    <div class="container">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="row mb-3">
+                    <div class="col-2">Explore cars by : </div>
+                    <div class="col-2">
+                        <select class="form-control form-control-sm" id="carsSortOption">
+                            <option>Transmission Type</option>
+                            <option>open</option>
+                            <option>closed</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <div id="selectedCarSortOption">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                                <label class="form-check-label" for="inlineCheckbox1">1</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                                <label class="form-check-label" for="inlineCheckbox2">2</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3" disabled>
+                                <label class="form-check-label" for="inlineCheckbox3">3 (disabled)</label>
+                            </div>
+                        </div>
+                    <div class="col-4">
+                        <button type="button" onclick="getOrdersBasedOnStatus()" class="btn btn-success" >Sort</button>
+                    </div>
+                </div>
+            </div>
         <div id="displayAlltheCars">
+        </div>
+    </div>
         </div>
     </div>
 </div>
@@ -139,7 +172,47 @@
 <div id="model2"></div>
 <!--datePick-->
 
+
+<!--displaying order management-->
+
+<div id="bookingMngt">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+                <h5>My Order Status</h5>
+                <div class="row mb-3">
+                    <div class="col-3 mr-3">Sort By : </div>
+                    <div class="col-4">
+                        <select class="form-control form-control-sm" id="orderSortOption">
+                            <option>pending</option>
+                            <option>open</option>
+                            <option>closed</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <button type="button" onclick="getOrdersBasedOnStatus()" class="btn btn-success" >Sort</button>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Order ID:</th>
+                        <th scope="col">CarReg</th>
+                        <th scope="col">Date of Booking</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Driver</th>
+                    </tr>
+                    </thead>
+                    <tbody id="orderStatustbody">
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-6"></div>
+        </div>
+    </div>
 </div>
+
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
         crossorigin="anonymous"></script>

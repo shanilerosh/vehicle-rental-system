@@ -1,7 +1,10 @@
 package com.easycar.spring.service;
 
-import com.easycar.spring.dto.BookingDTO;
+import com.easycar.spring.dto.BookingDetailDTO;
+
+import java.util.List;
 
 public interface BookingService {
-    void addBooking(String date,String email);
+    void placeBooking(Object[] bookingDetailData);
+    List<BookingDetailDTO> getDetailsOnStatus(String custEmail,String status);
 }

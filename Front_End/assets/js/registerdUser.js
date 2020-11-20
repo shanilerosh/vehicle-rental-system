@@ -1,8 +1,11 @@
 let lisOfBookings=[];
 $('#confAlert').alert('close');
 let listOfAllCars='';
+let customerEmail='sdgds';
 
-loadCarForRegsitered()
+loadCarForRegsitered();
+
+
 let b=10;
 function loadCarForRegsitered() {
     $('#displayAlltheCars').children().remove();
@@ -43,13 +46,12 @@ let price='';
 let carName=''
 function viewDetail(evt) {
     const selectedReg = evt.parentElement.children[1].innerHTML;
-
     $.ajax({
         url: 'http://localhost:8080/demo/api/v1/car/' + selectedReg,
         type: 'get',
         contentType: 'application/json',
         success: function (res) {
-            crid=res.data.reg;
+            crid=res.data.registrationNumb;
             carBrand=res.data.brand;
             color=res.data.brand;
             price=res.data.mnthlyRate;
@@ -130,7 +132,7 @@ function viewDetail(evt) {
 function confirmToBucket(crid,depAmount,color,price,carBrand,name) {
     $('#myModal').modal('hide');
     lisOfBookings.push({
-        rid:crid,
+        reg:crid,
         dep:depAmount,
         col:color,
         prc:price,
@@ -144,7 +146,7 @@ function loadAllDataToBucket() {
     $('#bucketTbody').children().remove();
     for (let i = 0; i <lisOfBookings.length; i++) {
         $('#bucketTbody').append(`  <tr><th scope="row">${lisOfBookings[i].rid}</th>
-      <td>${lisOfBookings[i].dep}</td>
+      <td>${lisOfBookings[i].reg}</td>
       <td>${lisOfBookings[i].col}</td>
       <td>${lisOfBookings[i].price}</td></tr>`)
         $($('#bucketTbody').children()[i]).click((e)=>{
@@ -165,13 +167,12 @@ function loadAllDataToBucket() {
 
 function finalizeBooking() {
     if(validateBookingFields()) {
-
     }
-
     const myForm = new FormData($('#bcktForm')[0]);
     const checkBox=$('#bcktDriver').is(":checked");
     const crid=$('#bcktReg').val();
-    myForm.append('customer','c001');
+    console.log('car Id',crid,checkBox);
+    myForm.append('customer',customerEmail);
     myForm.append('driver',checkBox);
     myForm.append('vehicleId',crid);
     $.ajax({
@@ -181,12 +182,46 @@ function finalizeBooking() {
         contentType: false,
         processData: false,
         success: function (res) {
+            if(res.msg=="Success") {
+                const reg = $('#bcktReg').val();
+                $('#bucketTbody tr').each(()=>{
 
+                })
+            }
         }
     });
-
 }
 
 function validateBookingFields() {
 
 }
+
+
+function getOrdersBasedOnStatus() {
+    const option = $('#orderSortOption').val();
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/booking/getonstatus/'+customerEmail+'/'+option,
+        type: 'get',
+        contentType: 'application/json',
+        success: function (res) {
+            $('#orderStatustbody').children().remove();
+            const dataSet=res.data;
+            for(const data of dataSet) {
+                $('#orderStatustbody').append(`
+                    <tr>
+                        <th scope="row">${data.detail}</th>
+                        <td>${data.car.registrationNumb}</td>
+                        <td>${data.dateTime}</td>
+                        <td>${data.status}</td>
+                        <td>${data.driver==null ? "No Driver" : data.driver.driverName}</td>
+                    </tr>
+                `)
+            }
+        }
+    });
+}
+
+
+$('#carsSortOption').on('change',()=>{
+    $('#opt')
+})

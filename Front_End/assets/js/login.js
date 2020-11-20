@@ -1,4 +1,12 @@
- function savecustomer() {
+$('#mytab a').on('click', function (e) {
+    console.log("fsfa")
+    e.preventDefault()
+    $(this).tab('show')
+})
+
+
+
+function savecustomer() {
         if(!validateFields()){
             return;
         }

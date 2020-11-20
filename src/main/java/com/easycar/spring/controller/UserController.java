@@ -1,11 +1,6 @@
 package com.easycar.spring.controller;
 
 import com.easycar.spring.dto.UserDTO;
-import com.easycar.spring.entity.Booking;
-import com.easycar.spring.entity.BookingDetail;
-import com.easycar.spring.repo.BookingDetailsRepo;
-import com.easycar.spring.repo.BookingRepo;
-import com.easycar.spring.service.BookingService;
 import com.easycar.spring.service.UserService;
 import com.easycar.spring.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;

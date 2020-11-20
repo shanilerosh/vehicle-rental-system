@@ -7,64 +7,93 @@
 <!--    <link rel="stylesheet" href="assets/normalize.css">-->
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-6">
-                <form>
-                    <h1>login</h1>
-                    <div class="logingVal"></div>
-                    <div class="form-group">
-                        <label for="loginEmail">Email</label>
-                        <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" name="loginEmail">
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                        <div class="loginEmailVal"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="loginPassword">Password</label>
-                        <input type="password" class="form-control" id="loginPassword" name="loginPassword" >
-                        <div class="loginPassVal"></div>
-                    </div>
-                    <button type="button" class="btn btn-primary" onclick="checkLoginDetail()">Submit</button>
-                </form>
-            </div>
+    <div class="container mt-5 d-flex justify-content-center" id="mytab">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#login">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#signup">Sign Up</a>
+            </li>
+         </ul>
+    </div>
 
-
-            <div class="col-6">
-                <h1>Sign Up</h1>
-                <form id="signupform" >
-                    <div class="signupstatus"></div>
-                    <div class="form-group">
-                        <label for="customerName">Name</label>
-                        <input type="text" class="form-control" id="customerName" placeholder="Shanil Mirada" name="name">
-                        <div class="custNameVal"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="customerEmail">Email</label>
-                        <input type="email" class="form-control" id="customerEmail" placeholder="shanil@ijse.lk" name="email">
-                        <div class="emailVal"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="customerAddress">Address</label>
-                        <input type="text" class="form-control" id="customerAddress" placeholder="Negombo,Sri Lanka" name="address">
-                        <div class="addressVal"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="customerPassword">Password</label>
-                        <input type="password" class="form-control" id="customerPassword" name="password">
-                        <div class="passwordVal"></div>
-                    </div>
-                    <form>
-                        <div class="form-group">
-                            <label>Insert your NIC / Driving Liscenece </label>
-                            <input type="file" class="form-control-file" id="customerDoc" name="doc">
-                            <div class="docVal"></div>
+    <div class="tab-content">
+        <div class="tab-pane active" id="login" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-4">
+                                <div class="container-fluid">
+                                    <h5>login</h5>
+                                    <div class="logingVal"></div>
+                                    <div class="form-group">
+                                        <label for="loginEmail">Email</label>
+                                        <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" name="loginEmail">
+                                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                        <div class="loginEmailVal"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="loginPassword">Password</label>
+                                        <input type="password" class="form-control" id="loginPassword" name="loginPassword" >
+                                        <div class="loginPassVal"></div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary" onclick="checkLoginDetail()">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                    </form>
-                    <button type="button" class="btn btn-primary" onclick="savecustomer()">Register</button>
+        </div>
+
+
+        <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="profile-tab">            <div class="col-6">
+            <h1>Sign Up</h1>
+            <form id="signupform" >
+                <div class="signupstatus"></div>
+                <div class="form-group">
+                    <label for="customerName">Name</label>
+                    <input type="text" class="form-control" id="customerName" placeholder="Shanil Mirada" name="name">
+                    <div class="custNameVal"></div>
+                </div>
+                <div class="form-group">
+                    <label for="customerEmail">Email</label>
+                    <input type="email" class="form-control" id="customerEmail" placeholder="shanil@ijse.lk" name="email">
+                    <div class="emailVal"></div>
+                </div>
+                <div class="form-group">
+                    <label for="customerAddress">Address</label>
+                    <input type="text" class="form-control" id="customerAddress" placeholder="Negombo,Sri Lanka" name="address">
+                    <div class="addressVal"></div>
+                </div>
+                <div class="form-group">
+                    <label for="customerPassword">Password</label>
+                    <input type="password" class="form-control" id="customerPassword" name="password">
+                    <div class="passwordVal"></div>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label>Insert your NIC / Driving Liscenece </label>
+                        <input type="file" class="form-control-file" id="customerDoc" name="doc">
+                        <div class="docVal"></div>
+                    </div>
                 </form>
-            </div>
+                <button type="button" class="btn btn-primary" onclick="savecustomer()">Register</button>
+            </form>
+        </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    </div>-->
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>

@@ -1,5 +1,6 @@
 package com.easycar.spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,8 +38,9 @@ public class Car {
     private String bckImg;
     private String transmissionType;
     private String fuelType;
+    private int milege;
 
-    public Car(String name, String brand, String carType, String registrationNumb, Double mnthlyRate, Double dlyRate, Integer freeKmPerDay, Integer freeKmPerMonth, Double pricePerExtrakm, Integer nmberOfPssngers, String color, String carState, String interiorImge, String frntImg, String sideImg, String bckImg, String transmissionType, String fuelType) {
+    public Car(String name, String brand, String carType, String registrationNumb, Double mnthlyRate, Double dlyRate, Integer freeKmPerDay, Integer freeKmPerMonth, Double pricePerExtrakm, Integer nmberOfPssngers, String color, String carState, String interiorImge, String frntImg, String sideImg, String bckImg, String transmissionType, String fuelType, int milege) {
         this.name = name;
         this.brand = brand;
         this.carType = carType;
@@ -57,8 +59,10 @@ public class Car {
         this.bckImg = bckImg;
         this.transmissionType = transmissionType;
         this.fuelType = fuelType;
+        this.milege = milege;
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "car",cascade = CascadeType.ALL)
     private List<BookingDetail> bookingDetails=new ArrayList<>();
 

@@ -39,7 +39,7 @@ public class CarController {
         Object[] dataSet = {
                 carName, carBrand, carRegNumber, Double.parseDouble(carMonthyRate), Double.parseDouble(carDailyRate), Integer.parseInt(carFreeKmPerDay),
                 Integer.parseInt(carFreeKmPerMonth), Double.parseDouble(carPricePerExtraKm), Integer.parseInt(carNumberOfPassenger), carColor, carImageInterior, carImageFront,
-                carImageSide, carImageBack,carType,carState,transmissionType,fuelType
+                carImageSide, carImageBack,carType,carState,transmissionType,fuelType,123
         };
         carService.addCar(dataSet);
         return new ResponseEntity(new StandardResponse(200,"Success",null),HttpStatus.CREATED);

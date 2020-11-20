@@ -9,6 +9,7 @@ function loadCar() {
         success: function (res) {
             console.log(res);
             for(let resp of res.data) {
+                console.log(resp.frntImg);
                 const imgSrc=resp.frntImg.slice(90,resp.frntImg.length);
                 console.log(imgSrc);
                 $('#carView').append(`<div class="card" style="width: 18rem;">

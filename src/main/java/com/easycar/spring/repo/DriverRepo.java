@@ -1,6 +1,5 @@
 package com.easycar.spring.repo;
 
-import com.easycar.spring.entity.Booking;
 import com.easycar.spring.entity.Driver;
 import org.springframework.data.jpa.repository.JpaRepository;
 
