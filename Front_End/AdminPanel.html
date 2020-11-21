@@ -5,7 +5,7 @@
     <title>Title</title>
     <link rel="stylesheet" href="assets/bootswatch/bootstrap.min%20_litera.css">
 </head>
-<body>
+<body style="font-family: Helvetica">
 <link rel="stylesheet" href="style.css">
 <div class="wrapper">
     <nav id="sidebar">
@@ -13,7 +13,10 @@
             <h3>Admin Panel</h3>
         </div>
         <ul class="list-unstyled components">
-            <li onclick="loadCustomersStatus()">Hello</li>
+            <li onclick="loadCustomersStatus()"><h6>Manage Customer</h6></li>
+        </ul>
+        <ul class="list-unstyled components">
+            <li onclick="loadCustomersStatus()"><h6>Manage Cars</h6></li>
         </ul>
     </nav>
 
@@ -22,15 +25,19 @@
 <!--        Append to this-->
         <div id="admincustomermanage">
             <div class="container-fluid">
-                <h3>Customer Confirmation</h3>
+                <h5>Customer Confirmation</h5>
                 <div class="row mb-4 mt-4">
-                    <div class="col-4">
-                        <select class="form-control form-control-sm">
-                            <option>Small select</option>
+                    <div class="form-group">
+                        <label>Sort By :</label>
+                        <select class="form-control-sm" id="customerSearchCriteria">
+                            <option>Name</option>
+                            <option>Email</option>
+                            <option>Address</option>
+                            <option>Date of Reg</option>
                         </select>
                     </div>
-                    <div class="col4">
-                        <button type="button" class="btn btn-success">Sort Customer</button>
+                    <div class="col-4">
+                        <input class="form-control form-control-sm" type="text" placeholder="Type to get result" id="customerName" onkeydown="searchCustomer()">
                     </div>
                 </div>
                 <div class="row">
@@ -42,28 +49,10 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Address</th>
                                     <th scope="col">Email</th>
-                                    <th scope="col">Registration Date</th>
+                                    <th scope="col">Legal Doc</th>
                                 </tr>
                                 </thead>
                                 <tbody id="admincustomertbody">
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Larry</td>
-                                    <td>the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -71,6 +60,8 @@
                     <!--                Display Image-->
                     <div class="col-4">
                         <div class="jumbotron" style="width: 300px; height: 400px" id="customerDocImg">
+                            <small>Driving Liscenece / Nic</small>
+                            <img id="custDocImg" src=" " alt="" style="width: 95%; height: 95%">
                         </div>
                     </div>
                 </div>
