@@ -1,10 +1,8 @@
 package com.easycar.spring.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -12,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -62,13 +60,95 @@ public class Car {
         this.milege = milege;
     }
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "car",cascade = CascadeType.ALL)
     private List<BookingDetail> bookingDetails=new ArrayList<>();
 
+    public int getReg() {
+        return reg;
+    }
 
+    public String getName() {
+        return name;
+    }
 
+    public String getBrand() {
+        return brand;
+    }
 
-//    @OneToMany(mappedBy = "car")
+    public String getCarType() {
+        return carType;
+    }
+
+    public String getRegistrationNumb() {
+        return registrationNumb;
+    }
+
+    public Double getMnthlyRate() {
+        return mnthlyRate;
+    }
+
+    public Double getDlyRate() {
+        return dlyRate;
+    }
+
+    public Integer getFreeKmPerDay() {
+        return freeKmPerDay;
+    }
+
+    public Integer getFreeKmPerMonth() {
+        return freeKmPerMonth;
+    }
+
+    public Double getPricePerExtrakm() {
+        return pricePerExtrakm;
+    }
+
+    public Integer getNmberOfPssngers() {
+        return nmberOfPssngers;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getCarState() {
+        return carState;
+    }
+
+    public String getInteriorImge() {
+        return interiorImge;
+    }
+
+    public String getFrntImg() {
+        return frntImg;
+    }
+
+    public String getSideImg() {
+        return sideImg;
+    }
+
+    public String getBckImg() {
+        return bckImg;
+    }
+
+    public String getTransmissionType() {
+        return transmissionType;
+    }
+
+    public String getFuelType() {
+        return fuelType;
+    }
+
+    public int getMilege() {
+        return milege;
+    }
+
+    @JsonManagedReference
+    public List<BookingDetail> getBookingDetails() {
+        return bookingDetails;
+    }
+
+    //    @OneToMany(mappedBy = "car")
 //    private List<Maintanance> maintanances=new ArrayList<>();
 }

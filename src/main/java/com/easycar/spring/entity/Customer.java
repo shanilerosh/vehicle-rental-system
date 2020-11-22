@@ -1,5 +1,7 @@
 package com.easycar.spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -8,7 +10,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @Setter
 @ToString
 @AllArgsConstructor
@@ -35,6 +36,40 @@ public class Customer {
         this.dateOfReg = dateOfReg;
     }
 
+
     @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
     List<BookingDetail> bookingDetails=new ArrayList<>();
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getDocument() {
+        return document;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public Date getDateOfReg() {
+        return dateOfReg;
+    }
+
+    @JsonManagedReference
+    public List<BookingDetail> getBookingDetails() {
+        return bookingDetails;
+    }
 }

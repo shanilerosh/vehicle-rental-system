@@ -27,9 +27,9 @@ function loadCar() {
 
 
 function saveCar() {
-    // if(!isCarValid()){
-    //     return;
-    // }
+    if(!isCarValid()){
+        return;
+    }
 
     let formData = new FormData($('#carAddForm')[0]);
         $.ajax({

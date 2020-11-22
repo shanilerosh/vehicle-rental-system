@@ -7,11 +7,11 @@ import com.easycar.spring.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
+@CrossOrigin
 @RestController
 @RequestMapping("api/v1/driver")
 public class DriverController {
@@ -24,4 +24,14 @@ public class DriverController {
         driverService.addDriver(driverDTO);
         return new ResponseEntity(new StandardResponse(200,"Success",null), HttpStatus.CREATED);
     }
+
+
+    @GetMapping("/getdrivernames/{except}")
+    public ResponseEntity getDriver(@PathVariable String except) {
+        System.out.println("Inside driver controller");
+        ArrayList<DriverDTO> driverName = driverService.findDriverNamesExcept(except);
+        System.out.println("Inside");
+        return new ResponseEntity(new StandardResponse(200,"Success",driverName), HttpStatus.CREATED);
+    }
 }
+
