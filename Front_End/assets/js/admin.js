@@ -378,3 +378,66 @@ function getIndividualSchedule(val){
     });
 
 }
+
+
+function viewBidDetailsFromBid() {
+    const bid = $('#paymentReturnBidText').val();
+    console.log(bid);
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/booking/paymentdetail/'+bid,
+        type: 'get',
+        contentType: 'application/json',
+        success: function (res) {
+            if(res.code==500){
+                $('.paymentAndReturnVal').children().remove();
+                $('.paymentAndReturnVal').append(`
+                    <div class="alert alert-danger" role="alert">
+  ${res.msg}
+</div>
+                `)
+            }
+
+
+            $('#paymntCustName').children().remove();
+            $('#paymentCarId').children().remove();
+            $('#paymntDateOfRqrd').children().remove();
+            $('#paymentStartingMilage').children().remove();
+            $('#paymentDetailAutoUpdate').css({display:''})
+            $('#paymntCustName').append(`<p>Customer Name : ${res.data.customer.name}</p>`);
+            $('#paymentCarId').append(`<p>Car Id : ${res.data.car.reg}</p>`);
+            $('#paymntDateOfRqrd').append(`<p>Starting Date : ${res.data.dateTime}</p>`);
+            $('#paymentStartingMilage').append(`<p>Car Milage : ${res.data.car.milege}</p>`);
+        }
+    })
+}
+
+
+
+function calculatePayment() {
+    const actualReturnDate = $('#paymentCustActuallyReturned').val();
+    const carDateOfAquire = $('#paymntDateOfRqrd').children()[0].textContent;
+    const damages = $('#paymentDamages').val();
+    const carEndingMilage = $('#paymentMilage').val();
+    const milage = $('#paymentStartingMilage').children()[0].textContent;
+    const carId = $('#paymentCarId').children()[0].textContent;
+    const startingMilage = milage.slice(12,milage.length).trim();
+    const form=new FormData();
+    form.append('returndate',actualReturnDate);
+    form.append('startdate',startingMilage);
+    form.append('damage',damages);
+    form.append('startmilage',startingMilage);
+    form.append('endingmilage',carEndingMilage);
+    form.append('driver',false);
+    form.append('carId',1);
+    console.log(form);
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/return/calpayment',
+        type: 'post',
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function (res) {
+        }
+    })
+
+}

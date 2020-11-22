@@ -1,9 +1,6 @@
 package com.easycar.spring.service.imp;
 
-import com.easycar.spring.dto.BookingDetailDTO;
-import com.easycar.spring.dto.BookingPendingDTO;
-import com.easycar.spring.dto.CarScheduleDTO;
-import com.easycar.spring.dto.DriverScheduleDTO;
+import com.easycar.spring.dto.*;
 import com.easycar.spring.entity.BookingDetail;
 import com.easycar.spring.entity.Car;
 import com.easycar.spring.entity.Customer;
@@ -13,7 +10,6 @@ import com.easycar.spring.repo.CarRepo;
 import com.easycar.spring.repo.CustomerRepo;
 import com.easycar.spring.repo.DriverRepo;
 import com.easycar.spring.service.BookingService;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,9 +19,7 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -215,5 +209,19 @@ public class BookingServiceImpl implements BookingService {
         }
         System.out.println(carScheduleDTOS.size());
         return carScheduleDTOS;
+    }
+
+    @Override
+    public PaymentDetailDTO getPaymentDetail(String bid) {
+        Optional<BookingDetail> byId = bookingDetailsRepo.findById(Integer.parseInt(bid));
+        if(!byId.isPresent()){
+            throw new RuntimeException("Wrong Booking Id,Try again");
+        }
+        BookingDetail bookingDetail = byId.get();
+        Driver driver = bookingDetail.getDriver();
+        Car car = bookingDetail.getCar();
+        Customer customer = bookingDetail.getCustomer();
+        PaymentDetailDTO paymentDetailDTO = new PaymentDetailDTO(bookingDetail.getDetailId(), bookingDetail.getRqrdDateTime().toString(), bookingDetail.getStatus(), car, driver,customer);
+        return paymentDetailDTO;
     }
 }

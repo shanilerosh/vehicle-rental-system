@@ -61,7 +61,8 @@ public class Car {
     }
 
 
-    @OneToMany(mappedBy = "car",cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "car",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<BookingDetail> bookingDetails=new ArrayList<>();
 
     public int getReg() {

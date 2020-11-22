@@ -20,7 +20,8 @@ public class Driver {
     String driverStatus;
 
 
-    @OneToMany(mappedBy = "driver",cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "driver",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     List<BookingDetail> bookingDetails=new ArrayList<>();
 
     public String getDid() {

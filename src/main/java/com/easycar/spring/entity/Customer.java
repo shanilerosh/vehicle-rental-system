@@ -36,8 +36,8 @@ public class Customer {
         this.dateOfReg = dateOfReg;
     }
 
-
-    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     List<BookingDetail> bookingDetails=new ArrayList<>();
 
     public String getEmail() {

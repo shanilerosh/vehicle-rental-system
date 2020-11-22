@@ -1,9 +1,6 @@
 package com.easycar.spring.service;
 
-import com.easycar.spring.dto.BookingDetailDTO;
-import com.easycar.spring.dto.BookingPendingDTO;
-import com.easycar.spring.dto.CarScheduleDTO;
-import com.easycar.spring.dto.DriverScheduleDTO;
+import com.easycar.spring.dto.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +13,6 @@ public interface BookingService {
     void finalizeBooking(String bid, String did);
     void finalizeBookingWithoutDriver(String bid);
     void denyBooking(String bid, String denialMsg);
-
     List<CarScheduleDTO> getCarSchedule(String carId);
+    PaymentDetailDTO getPaymentDetail(String bid);
 }

@@ -9,10 +9,7 @@ import com.easycar.spring.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/return")
@@ -21,12 +18,14 @@ public class ReturnController {
     @Autowired
     private ReturnService returnService;
 
-    @Autowired
-    private ReturnRepo repo;
+    @PostMapping(path = "/calpayment")
+    public ResponseEntity getOnStatus(@RequestParam("returndate") String returnDate,
+                                      @RequestParam("startdate") String startdate,
+                                      @RequestParam("damage") String damage,@RequestParam("startmilage") String startmilage,
+                                      @RequestParam("endingmilage") String endingmilage,@RequestParam("driver") String driver,@RequestParam("carId") String carId){
 
-    @PostMapping
-    public ResponseEntity addReturn(@RequestBody Return returnDTO) {
-        repo.save(returnDTO);
+        String[] data={returnDate,startdate,damage,startmilage,endingmilage,driver,carId};
+        returnService.calculatePaymentAndReturn(data);
         return new ResponseEntity(new StandardResponse(200,"Success",null), HttpStatus.CREATED);
     }
 }
