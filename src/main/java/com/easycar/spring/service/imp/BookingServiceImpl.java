@@ -2,6 +2,7 @@ package com.easycar.spring.service.imp;
 
 import com.easycar.spring.dto.BookingDetailDTO;
 import com.easycar.spring.dto.BookingPendingDTO;
+import com.easycar.spring.dto.CarScheduleDTO;
 import com.easycar.spring.dto.DriverScheduleDTO;
 import com.easycar.spring.entity.BookingDetail;
 import com.easycar.spring.entity.Car;
@@ -178,7 +179,41 @@ public class BookingServiceImpl implements BookingService {
         System.out.println("here");
         Driver one = driverRepo.getOne(did);
         bookingDetail.setDriver(one);
+        bookingDetail.setStatus("open");
         BookingDetail save = bookingDetailsRepo.save(bookingDetail);
+    }
 
+    @Override
+    public void finalizeBookingWithoutDriver(String bid) {
+        Optional<BookingDetail> byId = bookingDetailsRepo.findById(Integer.parseInt(bid));
+        BookingDetail bookingDetail = byId.get();
+        bookingDetail.setStatus("open");
+        bookingDetailsRepo.save(bookingDetail);
+    }
+
+    @Override
+    public void denyBooking(String bid, String denialMsg) {
+        Optional<BookingDetail> byId = bookingDetailsRepo.findById(Integer.parseInt(bid));
+        BookingDetail bookingDetail = byId.get();
+        bookingDetail.setRemarks(denialMsg);
+        bookingDetail.setStatus("denied");
+        bookingDetailsRepo.save(bookingDetail);
+    }
+
+    @Override
+    public List<CarScheduleDTO> getCarSchedule(String carId) {
+        Optional<Car> byId = carRepo.findById(Integer.parseInt(carId));
+        Car car = byId.get();
+        List<BookingDetail> allByCar = bookingDetailsRepo.findAllByCar(car);
+        ArrayList<CarScheduleDTO> carScheduleDTOS = new ArrayList<>();
+        for (BookingDetail bookingDetail : allByCar) {
+            carScheduleDTOS.add(new CarScheduleDTO(
+                    bookingDetail.getRqrdDateTime().toString(),
+                    bookingDetail.getDateOfReturn().toString(),
+                    bookingDetail.getDriver()==null ? "No Driver":bookingDetail.getDriver().getDriverName()
+            ));
+        }
+        System.out.println(carScheduleDTOS.size());
+        return carScheduleDTOS;
     }
 }

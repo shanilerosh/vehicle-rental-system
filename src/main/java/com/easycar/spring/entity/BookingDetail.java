@@ -25,7 +25,7 @@ public class BookingDetail {
     private Date dateOkBooking;
     private Date dateOfReturn;
     private String rqrdLocation;
-
+    private String remarks;
 
     @ManyToOne()
     @JoinColumn(name="cr_Id",referencedColumnName = "reg",nullable = false)
@@ -40,12 +40,30 @@ public class BookingDetail {
         this.rqrdLocation = rqrdLocation;
     }
 
+    public BookingDetail(String status, String waiverSlip, Date rqrdDateTime, Date dateOkBooking, Date dateOfReturn, String rqrdLocation, String remarks) {
+        this.status = status;
+        this.waiverSlip = waiverSlip;
+        this.rqrdDateTime = rqrdDateTime;
+        this.dateOkBooking = dateOkBooking;
+        this.dateOfReturn = dateOfReturn;
+        this.rqrdLocation = rqrdLocation;
+        this.remarks = remarks;
+    }
+
     public int getDetailId() {
         return detailId;
     }
 
     public void setDetailId(int detailId) {
         this.detailId = detailId;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     public String getStatus() {

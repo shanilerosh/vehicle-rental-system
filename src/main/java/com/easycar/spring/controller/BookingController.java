@@ -1,9 +1,6 @@
 package com.easycar.spring.controller;
 
-import com.easycar.spring.dto.BookingDetailDTO;
-import com.easycar.spring.dto.BookingDriverDTO;
-import com.easycar.spring.dto.BookingPendingDTO;
-import com.easycar.spring.dto.DriverScheduleDTO;
+import com.easycar.spring.dto.*;
 import com.easycar.spring.entity.BookingDetail;
 import com.easycar.spring.entity.Driver;
 import com.easycar.spring.repo.BookingDetailsRepo;
@@ -83,10 +80,25 @@ public class BookingController {
         return new ResponseEntity(new StandardResponse(200,"Success",null),HttpStatus.CREATED);
     }
 
-    @PostMapping(path = "/testbooking")
+
+    @PostMapping(path = "/finalizebookingWithoutDriver")
     public ResponseEntity  test(@RequestBody BookingDriverDTO dto) {
-        System.out.println("Booking id "+dto.getBid());
-        Optional<BookingDetail> byId = repo.findById(Integer.parseInt(dto.getBid()));
-        return new ResponseEntity(new StandardResponse(200,"Success",byId.get()),HttpStatus.CREATED);
+        bookingService.finalizeBookingWithoutDriver(dto.getBid());
+        return new ResponseEntity(new StandardResponse(200,"Success",null),HttpStatus.CREATED);
+    }
+
+    @PostMapping(path = "/denyBooking")
+    public ResponseEntity  denyBooking(@RequestBody BookingDriverDTO dto) {
+        System.out.println(dto.getBid()+" "+dto.getMsg());
+        bookingService.denyBooking(dto.getBid(),dto.getMsg() );
+        return new ResponseEntity(new StandardResponse(200,"Success",null),HttpStatus.CREATED);
+    }
+
+
+    @GetMapping(path = "/getcarshedule/{carId}")
+    public ResponseEntity  getCarSchedule(@PathVariable String carId) {
+        List<CarScheduleDTO> carSchedule = bookingService.getCarSchedule(carId);
+        System.out.println("Comes here ater driver sche");
+        return new ResponseEntity(new StandardResponse(200,"Success",carSchedule),HttpStatus.CREATED);
     }
 }

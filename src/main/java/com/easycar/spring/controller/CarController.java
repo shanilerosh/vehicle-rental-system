@@ -64,4 +64,16 @@ public class CarController {
         System.out.println(reg);
         return new ResponseEntity(new StandardResponse(200,"Success",carService.getCarByPk(reg)),HttpStatus.CREATED);
     }
+
+    @GetMapping(path = "/getcarbystate/{state}")
+    public ResponseEntity findCarByState(@PathVariable String state){
+        ArrayList<CarDTO> list=carService.getCarByState(state);
+        return new ResponseEntity(new StandardResponse(200,"Success",list),HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/updatestate/{crId}/{val}")
+    public ResponseEntity findCarByState(@PathVariable String crId,@PathVariable String val){
+        carService.updateState(crId,val);
+        return new ResponseEntity(new StandardResponse(200,"Success",null),HttpStatus.CREATED);
+    }
 }

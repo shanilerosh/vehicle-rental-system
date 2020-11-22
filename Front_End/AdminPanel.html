@@ -290,57 +290,115 @@
         <!--        </div>-->
 
 
-        <div id="bookingDetailManage">
+<!--        <div id="bookingDetailManage">-->
+<!--            <div class="row">-->
+<!--                <table class="table table-hover">-->
+<!--                    <thead>-->
+<!--                    <tr class="table-primary" >-->
+<!--                        <th scope="col">Booking ID</th>-->
+<!--                        <th scope="col">Customer Name</th>-->
+<!--                        <th scope="col">Required Location</th>-->
+<!--                        <th scope="col">Date of Booking</th>-->
+<!--                        <th scope="col">Date of Return</th>-->
+<!--                        <th scope="col">Driver ID</th>-->
+<!--                        <th scope="col">Status</th>-->
+<!--                        <th scope="col">Accept</th>-->
+<!--                        <th scope="col">Deny</th>-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody id="pendingbookingtbody">-->
+<!--                    <tr>-->
+<!--                        <th scope="row">1</th>-->
+<!--                        <td>Mark</td>-->
+<!--                        <td>Otto</td>-->
+<!--                        <td>@mdo</td>-->
+<!--                        <td>Mark</td>-->
+<!--                        <td>Otto</td>-->
+<!--                        <td>@mdo</td>-->
+<!--                        <td>@mdo</td>-->
+<!--                        <td>@mdo</td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th scope="row">2</th>-->
+<!--                        <td>Jacob</td>-->
+<!--                        <td>Thornton</td>-->
+<!--                        <td>@fat</td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <th scope="row">3</th>-->
+<!--                        <td colspan="2">Larry the Bird</td>-->
+<!--                        <td>@twitter</td>-->
+<!--                    </tr>-->
+<!--                    </tbody>-->
+<!--                </table>-->
+
+<!--            </div>-->
+<!--            <div class="row"></div>-->
+<!--            <div class="row"></div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+
+
+
+        <div id="carSchedule">
+            <h3>Car Schedules</h3>
+
             <div class="row">
-                <table class="table table-hover">
+                <div class="col-8">
+                    <div class="form-group">
+                        <label>Sort By</label>
+                        <select class="form-control" id="carScheduleStateSelect">
+                            <option>Occupied</option>
+                            <option>Availabe</option>
+                            <option>Maintaince</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-4">-
+                    <button type="button" class="btn btn-success" onclick="getCarsScheduleByState()">Sort</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <table class="table">
                     <thead>
-                    <tr class="table-primary" >
-                        <th scope="col">Booking ID</th>
-                        <th scope="col">Customer Name</th>
-                        <th scope="col">Required Location</th>
-                        <th scope="col">Date of Booking</th>
-                        <th scope="col">Date of Return</th>
-                        <th scope="col">Driver ID</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Accept</th>
-                        <th scope="col">Deny</th>
+                    <tr>
+                        <th scope="col">Car Id</th>
+                        <th scope="col">Reg Numb</th>
+                        <th scope="col">Color</th>
+                        <th scope="col">Milege</th>
+                        <th scope="col">Passengers</th>
+                        <th scope="col">State</th>
+                        <th scope="col">Schedule</th>
                     </tr>
                     </thead>
-                    <tbody id="pendingbookingtbody">
+                    <tbody id="carScheduleTable">
                     <tr>
                         <th scope="row">1</th>
                         <td>Mark</td>
                         <td>Otto</td>
                         <td>@mdo</td>
-                        <td>Mark</td>
                         <td>Otto</td>
                         <td>@mdo</td>
                         <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
                     </tr>
                     </tbody>
                 </table>
-
             </div>
-            <div class="row"></div>
-            <div class="row"></div>
+
+
+
+
         </div>
 
-    </div>
 
 
 
+
+
+<!--    Accept Model with Driver-->
     <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="acceptModel">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -412,6 +470,87 @@
 
 
     </div>
+
+<!--    Accept Model WithoutDriver-->
+    <div class="modal" tabindex="-1" role="dialog" id="acceptModelWithoutDriver">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Accept Confirmation <div id="noDriverBid"></div></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure to confirm this Booking ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="acceptBookingWithoutDriver()">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--Dny Model-->
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" id="denyModel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <div id="denialBid"></div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="denialForm">
+                        <div class="form-group">
+                            <label class="col-form-label">Reason For Denial :</label>
+                            <textarea class="form-control" id="denialMsg" name="denialMsg"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="denyFinalBooking()">Deny Booking</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!--        Car Schedule Model-->
+        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modelIndividualCarSchedule">
+            <div class="modal-dialog modal-lg">
+                <div class="modalInsideCarId"></div>
+                <div class="modal-content">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Reqired Date</th>
+                            <th scope="col">Return Date</th>
+                            <th scope="col">Driver</th>
+                        </tr>
+                        </thead>
+                        <tbody id="modelCarScheduleTableBoy">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="changeCarToPreferedState(this)" value="Availabe">Mark As Available</button>
+                <button type="button" class="btn btn-primary" onclick="changeCarToPreferedState(this)" value="Occupied">Mark As Occupies</button>
+                <button type="button" class="btn btn-primary" onclick="changeCarToPreferedState(this)" value="Maintainance">Mark As Maintainance</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+
+
+
+
+
 </div>
 </div>
 

@@ -12,4 +12,9 @@ import lombok.ToString;
 public class BookingDriverDTO {
     String bid;
     String did;
+    String msg;
+
+
+
+
 }

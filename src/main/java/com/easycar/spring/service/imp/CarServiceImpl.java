@@ -13,7 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -85,5 +87,19 @@ public class CarServiceImpl implements CarService {
         Car carByReg = carRepo.findCarByReg(Integer.parseInt(reg));
         System.out.println(carByReg.getBrand());
         return mapper.map(carByReg,CarDTO.class);
+    }
+
+    @Override
+    public ArrayList<CarDTO> getCarByState(String state) {
+        ArrayList<Car> allByCarState = carRepo.findAllByCarState(state);
+        return mapper.map(allByCarState,new TypeToken<List<CarDTO>>(){}.getType());
+    }
+
+    @Override
+    public void updateState(String crId, String val) {
+        Optional<Car> byId = carRepo.findById(Integer.parseInt(crId));
+        Car car = byId.get();
+        car.setCarState(val);
+        carRepo.save(car);
     }
 }
