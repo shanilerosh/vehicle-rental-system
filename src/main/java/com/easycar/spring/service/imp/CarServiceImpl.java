@@ -102,4 +102,26 @@ public class CarServiceImpl implements CarService {
         car.setCarState(val);
         carRepo.save(car);
     }
+
+    @Override
+    public List<CarDTO> getAllCarsWhenTyping(String selected, String custInput) {
+        ArrayList<Car> availabe=null;
+        System.out.println(custInput);
+        System.out.println(selected);
+        if(selected.equals("Color")){
+             availabe= carRepo.findAllByCarStateAndColorStartingWith("Availabe",custInput);
+        }else if(selected.equals("Registration")){
+            availabe= carRepo.findAllByCarStateAndRegistrationNumbStartingWith("Availabe",custInput);
+        }else if(selected.equals("Car Type")){
+            availabe= carRepo.findAllByCarStateAndCarTypeStartingWith("Availabe",custInput);
+        }else if(selected.equals("Passengers")){
+            int i = Integer.parseInt(custInput);
+            availabe= carRepo.findAllByCarStateAndNmberOfPssngersStartingWith("Availabe",i);
+        }else if(selected.equals("Fuel Type")){
+            availabe= carRepo.findAllByCarStateAndFuelTypeStartingWith("Availabe",custInput);
+        }else if(selected.equals("Tranmission Type")){
+            availabe= carRepo.findAllByCarStateAndTransmissionTypeStartingWith("Availabe",custInput);
+        }
+        return mapper.map(availabe,new TypeToken<List<CarDTO>>(){}.getType());
+    }
 }

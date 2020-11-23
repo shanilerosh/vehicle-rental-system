@@ -1,12 +1,15 @@
-let lisOfBookings=[];
-$('#confAlert').alert('close');
-let listOfAllCars='';
-let customerEmail='sdgds';
+$('#customerOrder').css({display:'none'});
+$('#bookingMngt').css({display:'none'});
+$('#viewTheBucket').css({display:'none'});
 
+
+let lisOfBookings=[];
+let listOfAllCars='';
+// let customerEmail=localStorage.getItem('custId');
+let customerEmail='ayesh@123';
+localStorage.clear();
 loadCarForRegsitered();
 
-
-let b=10;
 function loadCarForRegsitered() {
     $('#displayAlltheCars').children().remove();
     let x=$('#displayAlltheCars').append(`<div class="row" id="tem0">`)
@@ -19,7 +22,6 @@ function loadCarForRegsitered() {
             let counter=0;
             for(let resp of res.data) {
                 const imgSrc=resp.frntImg.slice(90,resp.frntImg.length);
-                b=resp;
                 console.log(imgSrc);
                 $('#tem0').append(`<div class="col-4 mt-3 mb-3"><div class="card" style="width: 18rem;">
   <img width="200px" height="200px" src="${imgSrc}" class="card-img-top" alt="...">
@@ -28,7 +30,7 @@ function loadCarForRegsitered() {
     <small>${resp.registrationNumb}</small>
     <p class="card-text">${resp.brand}</p>
     <p class="card-text">${resp.carType}</p>
-    <button class="btn btn-primary" type="button" onclick="viewDetail(this)">Go somewhere</button>
+    <button class="btn btn-primary" type="button" onclick="viewDetail(this)">Detail</button>
   </div>
 </div></div>`)
             }
@@ -36,14 +38,16 @@ function loadCarForRegsitered() {
     })
 }
 
-$('#carView').append(`</div>`);
-
 
 let crid='';
+let registration='';
 let carBrand='';
 let color='';
-let price='';
+let dlyprice='';
+let mntlyprice='';
+let numberOfPssng='';
 let carName=''
+let depAmount=100;
 function viewDetail(evt) {
     const selectedReg = evt.parentElement.children[1].innerHTML;
     $.ajax({
@@ -51,13 +55,15 @@ function viewDetail(evt) {
         type: 'get',
         contentType: 'application/json',
         success: function (res) {
-            crid=res.data.registrationNumb;
-            carBrand=res.data.brand;
+            console.log(res.data.reg);
+            crid=res.data.reg;
+            registration=res.data.registrationNumb;
+            numberOfPssng=res.data.nmberOfPssngers;
+            carBrand=res.data.brand
+            carName=res.data.name;
             color=res.data.brand;
-            price=res.data.mnthlyRate;
-            price=res.data.name;
-            //Change this to field in the deposit
-            depAmount=res.data.mnthlyRate;
+            dlyprice=res.data.dlyRate;
+            mntlyprice=res.data.mnthlyRate;
             $('#model').children().remove();
             console.log(res.data.frntImg);
             const frntImg=res.data.frntImg.slice(90,res.data.frntImg.length);
@@ -75,20 +81,18 @@ function viewDetail(evt) {
                 </button>
             </div>
             <div class="modal-body">
-                <div id="carouselExampleIndicators" class="carousel slide active" data-ride="carousel">
-  <ol class="carousel-indicators">
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-  </ol>
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                          <div id="carouselExampleIndicators1" class="carousel slide" data-ride="carousel">
+                                    <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel">
+                                    <div id="carouselExampleIndicators3" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
-    <div class="carousel-item active d-block img-fluid">
+    <div class="carousel-item active">
       <img class="d-block w-100" src="${frntImg}" alt="First slide">
     </div>
-    <div class="carousel-item d-block img-fluid">
+    <div class="carousel-item">
       <img class="d-block w-100" src="${bckImg}" alt="Second slide">
     </div>
-    <div class="carousel-item d-block img-fluid">
+    <div class="carousel-item">
       <img class="d-block w-100" src="${sideImg}" alt="Third slide">
     </div>
   </div>
@@ -117,7 +121,7 @@ function viewDetail(evt) {
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="confirmToBucket(crid,depAmount,color,price,carBrand,name)">Add to Cart</button>
+                <button type="button" class="btn btn-primary" onclick="confirmToBucket(crid,depAmount,color,carBrand,name,registration,numberOfPssng,dlyprice,mntlyprice)">Add to Cart</button>
             </div>
         </div>
     </div>
@@ -129,49 +133,63 @@ function viewDetail(evt) {
 }
 
 
-function confirmToBucket(crid,depAmount,color,price,carBrand,name) {
+function confirmToBucket(crid,depAmount,color,carBrand,crname,registration,numberOfPssng,dlyprice,mntlyprice) {
     $('#myModal').modal('hide');
+    $('#alertSuccessToTheBucket').modal('show');
     lisOfBookings.push({
         reg:crid,
         dep:depAmount,
         col:color,
-        prc:price,
-        brand:carBrand
+        brand:carBrand,
+        name:crname,
+        registration:registration,
+        psg:numberOfPssng,
+        dly:dlyprice,
+        mthly:mntlyprice
     });
-    loadAllDataToBucket()
+    loadAllDataToBucket();
 }
 
 
 function loadAllDataToBucket() {
     $('#bucketTbody').children().remove();
-    for (let i = 0; i <lisOfBookings.length; i++) {
-        $('#bucketTbody').append(`  <tr><th scope="row">${lisOfBookings[i].rid}</th>
-      <td>${lisOfBookings[i].reg}</td>
-      <td>${lisOfBookings[i].col}</td>
-      <td>${lisOfBookings[i].price}</td></tr>`)
-        $($('#bucketTbody').children()[i]).click((e)=>{
-            console.log($(e.currentTarget).children().get(1).innerHTML);
-            $('#bcktReg').val($(e.currentTarget).children().get(1).innerHTML);
-            $('.bucketVal').children().remove();
-            $('.bucketVal').append(`<div class="alert alert-info" role="alert">
+    console.log(lisOfBookings);
+    if(lisOfBookings.length!==0){
+        for (let i = 0; i <lisOfBookings.length; i++) {
+            $('#bucketTbody').append(`  <tr><th scope="row">${lisOfBookings[i].reg}</th>
+      <td>${lisOfBookings[i].registration}</td>
+      <td>${lisOfBookings[i].name}</td>
+      <td>${lisOfBookings[i].psg}</td>
+      <td>${formatToCurrency(lisOfBookings[i].dly)}</td>
+      <td>${formatToCurrency(lisOfBookings[i].mthly)}</td>
+      </tr>`)
+
+            $($('#bucketTbody').children()[i]).click((e)=>{
+                console.log('click',$(e.currentTarget).children().get(1).innerHTML);
+                $('#bcktReg').val($(e.currentTarget).children().get(1).innerHTML);
+                $('.bucketVal').children().remove();
+                $('.bucketVal').append(`<div class="alert alert-info" role="alert">
   <h5 class="alert-heading">Waiver Deposit</h5>
-  <p>In order to confirm the booking. You must upload an image of the bank slip of the waiver deposit of Rs</p>
+  <p>In order to confirm the booking. You must upload an image of the bank slip of the waiver deposit</p>
 </div>`)
 
-        })
+            })
+        }
     }
+
 }
 
 
+function formatToCurrency(amount){
+    return (amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+}
 
 
 function finalizeBooking() {
-    if(validateBookingFields()) {
-    }
     const myForm = new FormData($('#bcktForm')[0]);
     const checkBox=$('#bcktDriver').is(":checked");
     const crid=$('#bcktReg').val();
-    console.log('car Id',crid,checkBox);
+    console.log('crid',crid)
     myForm.append('customer',customerEmail);
     myForm.append('driver',checkBox);
     myForm.append('vehicleId',crid);
@@ -182,11 +200,24 @@ function finalizeBooking() {
         contentType: false,
         processData: false,
         success: function (res) {
+            $('.bucketVal').children().remove();
             if(res.msg=="Success") {
-                const reg = $('#bcktReg').val();
-                $('#bucketTbody tr').each(()=>{
+                for (let i = 0; i < lisOfBookings.length; i++) {
+                    if(lisOfBookings[i].registration===crid){
+                        lisOfBookings.splice(i,1);
+                    }
+                }
 
-                })
+                $('#bucketTbody').children().remove();
+                loadAllDataToBucket();
+                clearFieldsOfBucket();
+                $('#bookingSuccessAlert').modal('show');
+            }else{
+                $('.bucketVal').append(`<div class="alert alert-danger" role="alert">
+  <h5 class="alert-heading">Error</h5>
+  <p>${res.data}</p>
+</div>`)
+
             }
         }
     });
@@ -212,8 +243,9 @@ function getOrdersBasedOnStatus() {
                         <th scope="row">${data.detail}</th>
                         <td>${data.car.registrationNumb}</td>
                         <td>${data.dateTime}</td>
-                        <td>${data.status}</td>
+                        <td><span class="badge badge-info">${data.status}</span></td>
                         <td>${data.driver==null ? "No Driver" : data.driver.driverName}</td>
+                        <td><button type="button" class="btn btn-success" value="${data.detail}" onclick="viewDetailOfBookingMgt(this)">Details</button></td>
                     </tr>
                 `)
             }
@@ -225,3 +257,86 @@ function getOrdersBasedOnStatus() {
 $('#carsSortOption').on('change',()=>{
     $('#opt')
 })
+
+
+
+
+function renderCarsForRegisteredUser() {
+    $('#displayAlltheCars').children().remove();
+    let x = $('#displayAlltheCars').append(`<div class="row" id="tem0">`)
+    const selected = $('#registeredselection').val();
+    const custInput = $('#registeredselectionval').val();
+    if (custInput.trim() === '') {
+        loadCarForRegsitered();
+    } else {
+
+        $.ajax({
+            url: 'http://localhost:8080/demo/api/v1/car/filter/' + selected + '/' + custInput,
+            type: 'get',
+            contentType: 'application/json',
+            success: function (res) {
+                listOfAllCars = res.data;
+                for (let resp of res.data) {
+                    const imgSrc = resp.frntImg.slice(90, resp.frntImg.length);
+                    console.log(imgSrc);
+                    $('#tem0').append(`<div class="col-4 mt-3 mb-3"><div class="card" style="width: 18rem;">
+  <img width="200px" height="200px" src="${imgSrc}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">${resp.name}</h5>
+    <small>${resp.registrationNumb}</small>
+    <p class="card-text">${resp.brand}</p>
+    <p class="card-text">${resp.carType}</p>
+    <button class="btn btn-primary" type="button" onclick="viewDetail(this)">Go somewhere</button>
+  </div>
+</div></div>`)
+                }
+            }
+        })
+    }
+}
+
+
+function displayCarsOnClick() {
+    alert('change this');
+}
+
+
+function displayBucketOnClick() {
+    $('#alertSuccessToTheBucket').modal('hide');
+    $('#bookingMngt').css({display:'none'});
+    $('#viewTheBucket').css({display:''});
+    $('#carDisplay').css({display:'none'});
+}
+
+function displayBookingMgt() {
+    getOrdersBasedOnStatus();
+    $('#bookingMngt').css({display:''});
+    $('#viewTheBucket').css({display:'none'});
+    $('#carDisplay').css({display:'none'});
+}
+
+
+
+function clearFieldsOfBucket() {
+    $('#bcktReg').val('');
+    $('#bcktLocation').val('');
+    $('#bcktDate').val('');
+    $('#returnDate').val('');
+    $('#customerDoc').val('')
+}
+
+
+function viewDetailOfBookingMgt(val) {
+    const bookingId=val.value;
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/booking//getOneDetail/'+bookingId,
+        type: 'get',
+        contentType: 'application/json',
+        success: function (res) {
+            $('#orderStatustbody').children().remove();
+            const dataSet=res.data;
+
+        }
+    });
+
+}

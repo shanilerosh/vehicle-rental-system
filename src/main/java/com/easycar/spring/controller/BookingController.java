@@ -67,6 +67,12 @@ public class BookingController {
         return new ResponseEntity(new StandardResponse(200,"Success",pendingDTo),HttpStatus.CREATED);
     }
 
+    @GetMapping(path = "/getOneDetail/{id}")
+    public ResponseEntity  getBookingDetail(@PathVariable String id) {
+        BookingPendingDTO booking=bookingService.getBookingDetail(id);
+        return new ResponseEntity(new StandardResponse(200,"Success",booking),HttpStatus.CREATED);
+    }
+
     @GetMapping(path = "/getdriverchedule/{did}/{from}/{to}")
     public ResponseEntity  getDriverSchedule(@PathVariable String did,@PathVariable String from,@PathVariable String to) {
         List<DriverScheduleDTO> driverSchedule=bookingService.getDriverSchedule(did,"pending",from,to);

@@ -57,6 +57,20 @@ public class BookingServiceImpl implements BookingService {
         String customer= (String) bookingDetailData[5];
         String returnDateTime= (String) bookingDetailData[6];
 
+        if(location.trim().length()==0){
+            throw new RuntimeException("Error.No Location Mentioned");
+        }if(dateAndTime.trim().length()==0){
+            throw new RuntimeException("Error.No Required Date Mentioned");
+        }if(vhcleId.trim().length()==0){
+            throw new RuntimeException("Error.No veihcle Selected");
+        }if(slip==null){
+            throw new RuntimeException("No desposit slip provided");
+        }if(returnDateTime.trim().length()==0){
+            throw new RuntimeException("No return date Included");
+        }if(slip.getOriginalFilename().trim().length()==0){
+            throw new RuntimeException("No Slip included.Please upload a slip");
+        }
+
         //Find customer
         Optional<Customer> foundCust = customerRepo.findById(customer);
         Customer orderCustomer = foundCust.get();
@@ -90,6 +104,9 @@ public class BookingServiceImpl implements BookingService {
         Date custDateTime = Date.valueOf(dateAndTime);
         Date reutnrDate = Date.valueOf(returnDateTime);
         Date bookigDate = Date.valueOf(LocalDate.now());
+        if(reutnrDate.before(bookigDate) || reutnrDate.before(custDateTime)){
+            throw new RuntimeException("False selection return date can't be before Return date of Today's date");
+        }
         System.out.println("Comes here");
         System.out.println(dateAndTime+" "+returnDateTime+" "+bookigDate);
         BookingDetail bookingDetail = new BookingDetail("pending", slippath, custDateTime, bookigDate,reutnrDate,location);
@@ -223,5 +240,19 @@ public class BookingServiceImpl implements BookingService {
         Customer customer = bookingDetail.getCustomer();
         PaymentDetailDTO paymentDetailDTO = new PaymentDetailDTO(bookingDetail.getDetailId(), bookingDetail.getRqrdDateTime().toString(), bookingDetail.getStatus(), car, driver,customer);
         return paymentDetailDTO;
+    }
+
+    @Override
+    public BookingPendingDTO getBookingDetail(String id) {
+        Optional<BookingDetail> byId = bookingDetailsRepo.findById(Integer.parseInt(id));
+        BookingDetail bookingDetail = byId.get();
+        return new BookingPendingDTO(bookingDetail.getDetailId(),
+                bookingDetail.getCustomer().getName(),
+                bookingDetail.getDateOkBooking().toString(),
+                bookingDetail.getDateOfReturn().toString(),
+                bookingDetail.getDriver()==null ? "No Driver" : bookingDetail.getDriver().getDid(),
+                bookingDetail.getStatus(),
+                bookingDetail.getRemarks()
+        );
     }
 }

@@ -10,4 +10,5 @@ public interface CustomerRepo extends JpaRepository<Customer,String> {
     List<Customer> findAllByNameStartingWith(String name);
     List<Customer> findAllByEmailStartingWith(String name);
     List<Customer> findAllByAddressStartingWith(String name);
+
 }

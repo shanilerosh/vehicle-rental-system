@@ -51,6 +51,13 @@ public class CarController {
         return new ResponseEntity(new StandardResponse(200,"Success",allCars),HttpStatus.CREATED);
     }
 
+
+    @GetMapping(path = "/filter/{selected}/{custInput}")
+    public ResponseEntity getAll(@PathVariable String selected,@PathVariable String custInput){
+        List<CarDTO> allCars = carService.getAllCarsWhenTyping(selected,custInput);
+        return new ResponseEntity(new StandardResponse(200,"Success",allCars),HttpStatus.CREATED);
+    }
+
     @GetMapping(path = "/{reg}")
     public ResponseEntity findCarByReg(@PathVariable String reg){
         System.out.println(reg);
@@ -59,7 +66,7 @@ public class CarController {
     }
 
 
-    @GetMapping(path = "/getbucket/{dataset}")
+    @GetMapping(path = "/getbucket/{reg}")
     public ResponseEntity findCarToBucket(@PathVariable String reg){
         System.out.println(reg);
         return new ResponseEntity(new StandardResponse(200,"Success",carService.getCarByPk(reg)),HttpStatus.CREATED);

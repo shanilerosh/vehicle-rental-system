@@ -15,4 +15,6 @@ public interface BookingService {
     void denyBooking(String bid, String denialMsg);
     List<CarScheduleDTO> getCarSchedule(String carId);
     PaymentDetailDTO getPaymentDetail(String bid);
+
+    BookingPendingDTO getBookingDetail(String id);
 }

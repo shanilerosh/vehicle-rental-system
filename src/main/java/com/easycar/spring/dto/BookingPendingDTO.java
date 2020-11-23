@@ -17,4 +17,15 @@ public class BookingPendingDTO {
     String dateOfReturn;
     String driverId;
     String status;
+    String remarks;
+
+    public BookingPendingDTO(int bookingId, String customerName, String rqrdLocation, String bookingDate, String dateOfReturn, String driverId, String status) {
+        this.bookingId = bookingId;
+        this.customerName = customerName;
+        this.rqrdLocation = rqrdLocation;
+        this.bookingDate = bookingDate;
+        this.dateOfReturn = dateOfReturn;
+        this.driverId = driverId;
+        this.status = status;
+    }
 }

@@ -379,7 +379,6 @@ function getIndividualSchedule(val){
 
 }
 
-
 function viewBidDetailsFromBid() {
     const bid = $('#paymentReturnBidText').val();
     console.log(bid);
@@ -396,8 +395,6 @@ function viewBidDetailsFromBid() {
 </div>
                 `)
             }
-
-
             $('#paymntCustName').children().remove();
             $('#paymentCarId').children().remove();
             $('#paymntDateOfRqrd').children().remove();
@@ -410,8 +407,6 @@ function viewBidDetailsFromBid() {
         }
     })
 }
-
-
 
 function calculatePayment() {
     const actualReturnDate = $('#paymentCustActuallyReturned').val();
