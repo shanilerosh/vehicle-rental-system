@@ -26,21 +26,21 @@ public class CarController {
     private CarService carService;
 
     @PostMapping(path = "/savecar")
-    public ResponseEntity addCar(@RequestParam("carName") String carName,@RequestParam("carType") String carType,
+    public ResponseEntity addCar(@RequestParam("carName") String carName, @RequestParam("carType") String carType,
                                  @RequestParam("carState") String carState, @RequestParam("carBrand") String carBrand, @RequestParam("carRegNumber") String carRegNumber,
                                  @RequestParam("carMonthyRate") String carMonthyRate, @RequestParam("carDailyRate") String carDailyRate,
                                  @RequestParam("carFreeKmPerDay") String carFreeKmPerDay, @RequestParam("carFreeKmPerMonth") String carFreeKmPerMonth,
                                  @RequestParam("carPricePerExtraKm") String carPricePerExtraKm, @RequestParam("carNumberOfPassenger") String carNumberOfPassenger,
                                  @RequestParam("carColor") String carColor, @RequestParam("carImageInterior") MultipartFile carImageInterior,
-                                 @RequestParam("carImageFront") MultipartFile carImageFront,@RequestParam("carImageSide") MultipartFile carImageSide,@RequestParam("carImageBack") MultipartFile carImageBack,
-                                @RequestParam("transmissionType") String transmissionType, @RequestParam("fuelType") String fuelType
+                                 @RequestParam("carImageFront") MultipartFile carImageFront, @RequestParam("carImageSide") MultipartFile carImageSide, @RequestParam("carImageBack") MultipartFile carImageBack,
+                                 @RequestParam("transmissionType") String transmissionType, @RequestParam("fuelType") String fuelType,
+                                 @RequestParam("carDeposit") String carDeposit, @RequestParam("carMilage") String carMilage
     ){
 
         Object[] dataSet = {
                 carName, carBrand, carRegNumber, Double.parseDouble(carMonthyRate), Double.parseDouble(carDailyRate), Integer.parseInt(carFreeKmPerDay),
                 Integer.parseInt(carFreeKmPerMonth), Double.parseDouble(carPricePerExtraKm), Integer.parseInt(carNumberOfPassenger), carColor, carImageInterior, carImageFront,
-                carImageSide, carImageBack,carType,carState,transmissionType,fuelType,123
-        };
+                carImageSide, carImageBack, carType, carState, transmissionType, fuelType, carDeposit, carMilage};
         carService.addCar(dataSet);
         return new ResponseEntity(new StandardResponse(200,"Success",null),HttpStatus.CREATED);
     }
@@ -73,14 +73,20 @@ public class CarController {
     }
 
     @GetMapping(path = "/getcarbystate/{state}")
-    public ResponseEntity findCarByState(@PathVariable String state){
-        ArrayList<CarDTO> list=carService.getCarByState(state);
-        return new ResponseEntity(new StandardResponse(200,"Success",list),HttpStatus.CREATED);
+    public ResponseEntity findCarByState(@PathVariable String state) {
+        ArrayList<CarDTO> list = carService.getCarByState(state);
+        return new ResponseEntity(new StandardResponse(200, "Success", list), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/updatestate/{crId}/{val}")
-    public ResponseEntity findCarByState(@PathVariable String crId,@PathVariable String val){
-        carService.updateState(crId,val);
-        return new ResponseEntity(new StandardResponse(200,"Success",null),HttpStatus.CREATED);
+    public ResponseEntity findCarByState(@PathVariable String crId, @PathVariable String val) {
+        carService.updateState(crId, val);
+        return new ResponseEntity(new StandardResponse(200, "Success", null), HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/searchCars/{selected}/{custInput}")
+    public ResponseEntity searchCarWithUserInput(@PathVariable String selected, @PathVariable String custInput) {
+        List<CarDTO> allCars = carService.searchAllTypeCarsWhenTyping(selected, custInput);
+        return new ResponseEntity(new StandardResponse(200, "Success", allCars), HttpStatus.CREATED);
     }
 }

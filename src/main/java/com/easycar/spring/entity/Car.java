@@ -37,8 +37,9 @@ public class Car {
     private String transmissionType;
     private String fuelType;
     private int milege;
+    private int deposit;
 
-    public Car(String name, String brand, String carType, String registrationNumb, Double mnthlyRate, Double dlyRate, Integer freeKmPerDay, Integer freeKmPerMonth, Double pricePerExtrakm, Integer nmberOfPssngers, String color, String carState, String interiorImge, String frntImg, String sideImg, String bckImg, String transmissionType, String fuelType, int milege) {
+    public Car(String name, String brand, String carType, String registrationNumb, Double mnthlyRate, Double dlyRate, Integer freeKmPerDay, Integer freeKmPerMonth, Double pricePerExtrakm, Integer nmberOfPssngers, String color, String carState, String interiorImge, String frntImg, String sideImg, String bckImg, String transmissionType, String fuelType, int milege, int deposit) {
         this.name = name;
         this.brand = brand;
         this.carType = carType;
@@ -58,8 +59,8 @@ public class Car {
         this.transmissionType = transmissionType;
         this.fuelType = fuelType;
         this.milege = milege;
+        this.deposit = deposit;
     }
-
 
     @JsonIgnore
     @OneToMany(mappedBy = "car",cascade = CascadeType.ALL,fetch = FetchType.EAGER)

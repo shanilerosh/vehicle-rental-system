@@ -16,4 +16,6 @@ public interface CarService {
 
     void updateState(String crId, String val);
     List<CarDTO> getAllCarsWhenTyping(String selected, String custInput);
+
+    List<CarDTO> searchAllTypeCarsWhenTyping(String selected, String custInput);
 }

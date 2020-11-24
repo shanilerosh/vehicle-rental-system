@@ -29,25 +29,10 @@ public class CarDTO {
     private String frntImg;
     private String sideImg;
     private String bckImg;
+    private String transmissionType;
+    private String fuelType;
     private int milege;
+    private int deposit;
 
-    public CarDTO(String name, String brand, String carType, String registrationNumb, Double mnthlyRate, Double dlyRate, Integer freeKmPerDay, Integer freeKmPerMonth, Double pricePerExtrakm, Integer nmberOfPssngers, String color, String carState, String interiorImge, String frntImg, String sideImg, String bckImg, int milege) {
-        this.name = name;
-        this.brand = brand;
-        this.carType = carType;
-        this.registrationNumb = registrationNumb;
-        this.mnthlyRate = mnthlyRate;
-        this.dlyRate = dlyRate;
-        this.freeKmPerDay = freeKmPerDay;
-        this.freeKmPerMonth = freeKmPerMonth;
-        this.pricePerExtrakm = pricePerExtrakm;
-        this.nmberOfPssngers = nmberOfPssngers;
-        this.color = color;
-        this.carState = carState;
-        this.interiorImge = interiorImge;
-        this.frntImg = frntImg;
-        this.sideImg = sideImg;
-        this.bckImg = bckImg;
-        this.milege = milege;
-    }
+
 }

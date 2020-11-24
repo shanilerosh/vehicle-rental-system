@@ -37,26 +37,77 @@ public class CarServiceImpl implements CarService {
         Integer freeKmPerDay= (Integer) dataSet[5];
         Integer freeKmPerMonth= (Integer) dataSet[6];
         Double pricePerExtrakm = (Double) dataSet[7];
-        Integer nmberOfPssngers= (Integer) dataSet[8];
-        String color= (String) dataSet[9];
-        MultipartFile interiorImge= (MultipartFile) dataSet[10];
-        MultipartFile frntImge= (MultipartFile) dataSet[11];
-        MultipartFile sideImge= (MultipartFile) dataSet[12];
-        MultipartFile bckImge= (MultipartFile) dataSet[13];
-        String carType= (String) dataSet[14];
-        String carState= (String) dataSet[15];
-        String transmissionType= (String) dataSet[16];
-        String fuelType= (String) dataSet[17];
-        Integer trnsmission= (int) dataSet[18];
-        String interrPath="/home/shanil/Work Related Practice_Final Tech Wise/Java/CarRentalSystem_EasyCar/Front_End/assets/images/car/"+interiorImge.getOriginalFilename();
-        String frntPath="/home/shanil/Work Related Practice_Final Tech Wise/Java/CarRentalSystem_EasyCar/Front_End/assets/images/car/"+frntImge.getOriginalFilename();
-        String sidePath="/home/shanil/Work Related Practice_Final Tech Wise/Java/CarRentalSystem_EasyCar/Front_End/assets/images/car/"+sideImge.getOriginalFilename();
-        String backPath="/home/shanil/Work Related Practice_Final Tech Wise/Java/CarRentalSystem_EasyCar/Front_End/assets/images/car/"+bckImge.getOriginalFilename();
+        Integer nmberOfPssngers = (Integer) dataSet[8];
+        String color = (String) dataSet[9];
+        MultipartFile interiorImge = (MultipartFile) dataSet[10];
+        MultipartFile frntImge = (MultipartFile) dataSet[11];
+        MultipartFile sideImge = (MultipartFile) dataSet[12];
+        MultipartFile bckImge = (MultipartFile) dataSet[13];
+        String carType = (String) dataSet[14];
+        String carState = (String) dataSet[15];
+        String transmissionType = (String) dataSet[16];
+        String fuelType = (String) dataSet[17];
+        System.out.println(fuelType + " " + dataSet[17] + " " + dataSet[18] + "" + dataSet[19]);
+        int deposit = Integer.parseInt(dataSet[18].toString());
+        int milage = Integer.parseInt(dataSet[19].toString());
+        String interrPath = "/home/shanil/Work Related Practice_Final Tech Wise/Java/CarRentalSystem_EasyCar/Front_End/assets/images/car/" + interiorImge.getOriginalFilename();
+        String frntPath = "/home/shanil/Work Related Practice_Final Tech Wise/Java/CarRentalSystem_EasyCar/Front_End/assets/images/car/" + frntImge.getOriginalFilename();
+        String sidePath = "/home/shanil/Work Related Practice_Final Tech Wise/Java/CarRentalSystem_EasyCar/Front_End/assets/images/car/" + sideImge.getOriginalFilename();
+        String backPath = "/home/shanil/Work Related Practice_Final Tech Wise/Java/CarRentalSystem_EasyCar/Front_End/assets/images/car/" + bckImge.getOriginalFilename();
 
+        if (name.trim().length() == 0) {
+            throw new RuntimeException("Car Name is not there ⚠");
+        }
+        if (brand.trim().length() == 0) {
+            throw new RuntimeException("Car brand is not there ⚠");
+        }
+        if (reg.trim().length() == 0) {
+            throw new RuntimeException("Car Registration is not there ⚠");
+        }
+        if (mnthlyRate.toString().trim().length() == 0) {
+            throw new RuntimeException("Monthly Rate is not there ⚠");
+        }
+        if (dlyRate.toString().trim().length() == 0) {
+            throw new RuntimeException("Daily is not there ⚠");
+        }
+        if (freeKmPerDay.toString().trim().length() == 0) {
+            throw new RuntimeException("Free Km Per Day is not there ⚠");
+        }
+        if (freeKmPerMonth.toString().trim().length() == 0) {
+            throw new RuntimeException("Free Km Per Month is not there ⚠");
+        }
+        if (pricePerExtrakm.toString().trim().length() == 0) {
+            throw new RuntimeException("Price per extra km is not there ⚠");
+        }
+        if (color.toString().trim().length() == 0) {
+            throw new RuntimeException("Color is not there ⚠");
+        }
+        if (nmberOfPssngers.toString().trim().length() == 0) {
+            throw new RuntimeException("Number of passengrs is not there ⚠");
+        }
+        if (interiorImge.getOriginalFilename() == "") {
+            throw new RuntimeException("Interioir image is not there ⚠");
+        }
+        if (frntImge.getOriginalFilename() == "") {
+            throw new RuntimeException("Front image is not there ⚠");
+        }
+        if (bckImge.getOriginalFilename() == "") {
+            throw new RuntimeException("Back image is not there ⚠");
+        }
+        if (sideImge.getOriginalFilename() == "") {
+            throw new RuntimeException("Side image is not there ⚠");
+        }
+        if (Integer.toString(deposit).trim().length() == 0) {
+            throw new RuntimeException("Deposit is not there ⚠");
+        }
+        if (Integer.toString(milage).trim().length() == 0) {
+            throw new RuntimeException("Milage is not there ⚠");
+        }
+
+        System.out.println("File name " + interiorImge.getOriginalFilename());
         Car carByRegistrationNumb = carRepo.findCarsByRegistrationNumb(reg);
-
-        if(carByRegistrationNumb!=null){
-            throw new RuntimeException("Car with the Registration Number "+reg+" already exists.Please try again later");
+        if (carByRegistrationNumb != null) {
+            throw new RuntimeException("Car with the Registration Number " + reg + " already exists.Please try again later");
         }
         try {
             interiorImge.transferTo(new File(interrPath));
@@ -64,9 +115,9 @@ public class CarServiceImpl implements CarService {
             sideImge.transferTo(new File(sidePath));
             bckImge.transferTo(new File(backPath));
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
-        Car car = new Car(name, brand, carType, reg, mnthlyRate, dlyRate, freeKmPerDay, freeKmPerMonth, pricePerExtrakm, nmberOfPssngers, color, carState, interrPath, frntPath, sidePath, backPath,transmissionType,fuelType,trnsmission);
+        Car car = new Car(name, brand, carType, reg, mnthlyRate, dlyRate, freeKmPerDay, freeKmPerMonth, pricePerExtrakm, nmberOfPssngers, color, carState, interrPath, frntPath, sidePath, backPath, transmissionType, fuelType, milage, deposit);
         carRepo.save(car);
     }
 
@@ -114,14 +165,31 @@ public class CarServiceImpl implements CarService {
             availabe= carRepo.findAllByCarStateAndRegistrationNumbStartingWith("Availabe",custInput);
         }else if(selected.equals("Car Type")){
             availabe= carRepo.findAllByCarStateAndCarTypeStartingWith("Availabe",custInput);
-        }else if(selected.equals("Passengers")){
+        } else if (selected.equals("Passengers")) {
             int i = Integer.parseInt(custInput);
-            availabe= carRepo.findAllByCarStateAndNmberOfPssngersStartingWith("Availabe",i);
-        }else if(selected.equals("Fuel Type")){
-            availabe= carRepo.findAllByCarStateAndFuelTypeStartingWith("Availabe",custInput);
-        }else if(selected.equals("Tranmission Type")){
-            availabe= carRepo.findAllByCarStateAndTransmissionTypeStartingWith("Availabe",custInput);
+            availabe = carRepo.findAllByCarStateAndNmberOfPssngersStartingWith("Availabe", i);
+        } else if (selected.equals("Fuel Type")) {
+            availabe = carRepo.findAllByCarStateAndFuelTypeStartingWith("Availabe", custInput);
+        } else if (selected.equals("Tranmission Type")) {
+            availabe = carRepo.findAllByCarStateAndTransmissionTypeStartingWith("Availabe", custInput);
         }
-        return mapper.map(availabe,new TypeToken<List<CarDTO>>(){}.getType());
+        return mapper.map(availabe, new TypeToken<List<CarDTO>>() {
+        }.getType());
+    }
+
+    @Override
+    public List<CarDTO> searchAllTypeCarsWhenTyping(String selected, String custInput) {
+        ArrayList<Car> list = null;
+        if (selected.equals("Brand")) {
+            list = carRepo.findAllByBrandStartingWith(custInput);
+        } else if (selected.equals("Type")) {
+            list = carRepo.findAllByCarTypeStartingWith(custInput);
+        } else if (selected.equals("Fuel")) {
+            list = carRepo.findAllByFuelTypeStartingWith(custInput);
+        } else if (selected.equals("Transmission")) {
+            list = carRepo.findAllByFuelTypeStartingWith(custInput);
+        }
+        return mapper.map(list, new TypeToken<List<CarDTO>>() {
+        }.getType());
     }
 }
