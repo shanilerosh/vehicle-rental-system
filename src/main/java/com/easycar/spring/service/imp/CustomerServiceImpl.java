@@ -93,9 +93,67 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDTO searchSingleCustomer(String email) {
         Optional<Customer> byId = customerRepo.findById(email);
-        if(byId.isPresent()){
-            return mapper.map(byId.get(),CustomerDTO.class);
+        if (byId.isPresent()) {
+            return mapper.map(byId.get(), CustomerDTO.class);
         }
         return null;
     }
+
+    @Override
+    public void updateCustomer(Object[] custArr) {
+        MultipartFile files = (MultipartFile) custArr[0];
+        String email = (String) custArr[1];
+        String address = (String) custArr[2];
+        String name = (String) custArr[3];
+        String password = (String) custArr[4];
+        String rePassword = (String) custArr[5];
+        String contact = (String) custArr[6];
+
+        if (!password.equals(rePassword)) {
+            throw new RuntimeException("Error!, Passwrods doesnt match");
+        }
+        if (password.trim().length() != 0 && password.trim().length() < 8) {
+            throw new RuntimeException("Error!, Password must contain atleast 8 character");
+        }
+        if (address.trim().length() == 0) {
+            throw new RuntimeException("Error!, Address must be there");
+        }
+        if (name.trim().length() == 0) {
+            throw new RuntimeException("Error!, Name must be there");
+        }
+        if (contact.trim().length() == 0) {
+            throw new RuntimeException("Error!, Name must be there");
+        }
+        Optional<Customer> byId = customerRepo.findById(email);
+        Customer customer = byId.get();
+        customer.setName(name);
+        customer.setAddress(address);
+        customer.setContact(contact);
+        if (password.length() != 0) {
+            String salt = PasswordUtils.getSalt(10);
+            customer.setSalt(salt);
+            customer.setPassword(PasswordUtils.generateSecurePassword(password, salt));
+        }
+        if (files.getOriginalFilename().length() != 0) {
+            String filePath = "";
+            try {
+                files.transferTo(new File("/home/shanil/Work Related Practice_Final Tech Wise/Java/CarRentalSystem_EasyCar/Front_End/assets/images/customer/" + files.getOriginalFilename()));
+                filePath = "/home/shanil/Work Related Practice_Final Tech Wise/Java/CarRentalSystem_EasyCar/Front_End/assets/images/customer/" + files.getOriginalFilename();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            customer.setDocument(filePath);
+        }
+        customerRepo.save(customer);
+
+    }
+
+    @Override
+    public void updateContactOnly(String email, String contact) {
+        Customer customer = customerRepo.findById(email).get();
+        customer.setContact(contact);
+        customerRepo.save(customer);
+    }
+
 }
+

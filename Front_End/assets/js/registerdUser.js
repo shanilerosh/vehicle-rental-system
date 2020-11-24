@@ -1,14 +1,16 @@
 $('#customerOrder').css({display:'none'});
 $('#bookingMngt').css({display:'none'});
-$('#viewTheBucket').css({display:'none'});
-
+$('#viewTheBucket').css({display: 'none'});
+$('#profileSettings').css({display: 'none'});
 
 let lisOfBookings=[];
-let listOfAllCars='';
+let listOfAllCars = '';
+let isEditable = false;
 // let customerEmail=localStorage.getItem('custId');
 let customerEmail='ayesh@123';
 localStorage.clear();
 loadCarForRegsitered();
+countBookingDetails();
 
 function loadCarForRegsitered() {
     $('#displayAlltheCars').children().remove();
@@ -236,15 +238,15 @@ function getOrdersBasedOnStatus() {
         contentType: 'application/json',
         success: function (res) {
             $('#orderStatustbody').children().remove();
-            const dataSet=res.data;
-            for(const data of dataSet) {
+            for (const data of res.data) {
+                console.log(data);
                 $('#orderStatustbody').append(`
                     <tr>
                         <th scope="row">${data.detail}</th>
                         <td>${data.car.registrationNumb}</td>
                         <td>${data.dateTime}</td>
                         <td><span class="badge badge-info">${data.status}</span></td>
-                        <td>${data.driver==null ? "No Driver" : data.driver.driverName}</td>
+                        <td>${data.driver === null ? "No Driver" : data.driver.did}</td>
                         <td><button type="button" class="btn btn-success" value="${data.detail}" onclick="viewDetailOfBookingMgt(this)">Details</button></td>
                     </tr>
                 `)
@@ -297,7 +299,11 @@ function renderCarsForRegisteredUser() {
 
 
 function displayCarsOnClick() {
-    alert('change this');
+    $('#bookingMngt').css({display: 'none'});
+    $('#viewTheBucket').css({display: 'none'});
+    $('#profileSettings').css({display: 'none'});
+    $('#carDisplay').css({display: ''});
+    loadCarForRegsitered();
 }
 
 
@@ -305,14 +311,16 @@ function displayBucketOnClick() {
     $('#alertSuccessToTheBucket').modal('hide');
     $('#bookingMngt').css({display:'none'});
     $('#viewTheBucket').css({display:''});
-    $('#carDisplay').css({display:'none'});
+    $('#carDisplay').css({display: 'none'});
+    $('#profileSettings').css({display: 'none'});
 }
 
 function displayBookingMgt() {
     getOrdersBasedOnStatus();
     $('#bookingMngt').css({display:''});
     $('#viewTheBucket').css({display:'none'});
-    $('#carDisplay').css({display:'none'});
+    $('#carDisplay').css({display: 'none'});
+    $('#profileSettings').css({display: 'none'});
 }
 
 
@@ -327,16 +335,165 @@ function clearFieldsOfBucket() {
 
 
 function viewDetailOfBookingMgt(val) {
-    const bookingId=val.value;
+    console.log("herew isnse")
+    const bookingId = val.value;
+    console.log(bookingId);
     $.ajax({
-        url: 'http://localhost:8080/demo/api/v1/booking//getOneDetail/'+bookingId,
+        url: 'http://localhost:8080/demo/api/v1/booking//getOneDetail/' + bookingId,
         type: 'get',
         contentType: 'application/json',
         success: function (res) {
-            $('#orderStatustbody').children().remove();
-            const dataSet=res.data;
-
+            console.log(res.data);
+            if (res.data.status === "apending") {
+                $('#bookingDetailPendingStatus').modal('show');
+            } else if (res.data.status === "pending") {
+                $('#bookingDetailOpenStatusDes').children().remove();
+                $('#bookingDetailOpenStatus').modal('show');
+                $('#bookingDetailOpenStatusDes').append(`<p>
+                You booking Detail has been accepted.${res.data.driverId == "No Driver" ? "You can visit us to get the car" : "You driver Details are : "}
+                ${res.data.driverId !== "No Driver" ? "Driver ID :" + res.data.driverId : ""}  
+</p>`)
+            } else if (res.data.status === "opc") {
+                $('#bookingDetailDenyStatusDes').children().remove();
+                $('#bookingDetailDenyStatus').modal('show');
+                $('#bookingDetailDenyStatusDes').append(`<p>This reason for the denial is ${res.data.remarks}. You deposit will be refunded back to your account</p>`)
+            }
         }
     });
+
+}
+
+
+function countBookingDetails() {
+}
+
+
+function displayWarningToast(msg) {
+    $.toast({
+        heading: 'Warning',
+        text: msg,
+        icon: 'info',
+        bgColor: 'rgb(255,193,7)',
+        position: 'top-right',
+        textColor: 'black',
+        showHideTransition: 'slide'
+    })
+}
+
+function displaySuccessToast(msg) {
+    $.toast({
+        heading: 'Success',
+        text: msg,
+        icon: 'success',
+        bgColor: '#28A745',
+        position: 'top-right'
+    })
+}
+
+
+function displayErrorToast(msg) {
+    $.toast({
+        heading: 'Error',
+        text: msg,
+        icon: 'error',
+        bgColor: '#DC3545',
+        position: 'top-right'
+    })
+}
+
+
+function displayInfoToast(msg) {
+    $.toast({
+        heading: 'Information',
+        text: msg,
+        icon: 'info',
+        bgColor: '#007BFF',
+        position: 'top-right'
+    })
+}
+
+
+function editProfileSettings() {
+    $('#bookingMngt').css({display: 'none'});
+    $('#viewTheBucket').css({display: 'none'});
+    $('#carDisplay').css({display: 'none'});
+    $('#profileSettings').css({display: ''});
+    isEditable = true;
+    let mybookingList = '';
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/booking/getonstatus/' + customerEmail + '/' + 'pending',
+        type: 'get',
+        contentType: 'application/json',
+        success: function (res) {
+            if (res.data.length != 0) {
+                isEditable = false;
+                for (const data of res.data) {
+                    mybookingList += (" " + data.detail);
+                    console.log(mybookingList)
+                }
+                displayWarningToast("Only contact field is editable as there are bookinf as : " + mybookingList)
+            }
+            if (!isEditable) {
+                $('#regCustomerName').prop("readonly", true);
+                $('#regCustomerAddress').prop("readonly", true);
+                $('#regCustNIC').prop("disabled", true);
+                $('#regCustomerPassword').prop("readonly", true);
+                $('#regCustomerRePassword').prop("readonly", true);
+            }
+        }
+    });
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/customer/searchonecustomer/' + customerEmail,
+        type: 'get',
+        contentType: 'application/json',
+        success: function (res) {
+            const data = res.data;
+            console.log(data);
+            $('#regCustomerName').val(data.name);
+            $('#regCustomerAddress').val(data.address);
+            $('#regCustomerContact').val(data.contact);
+        }
+    });
+
+}
+
+function updateRegCustomer() {
+    if (isEditable) {
+        let formData = new FormData($('#customerUpdateform')[0]);
+        $.ajax({
+            url: 'http://localhost:8080/demo/api/v1/customer/updateregistered/' + customerEmail,
+            type: 'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.msg == "Success") {
+                    displaySuccessToast("Contact Detail Successfull updates")
+                } else {
+                    displayErrorToast(res.data);
+                }
+            }
+        })
+    } else {
+        let formData = new FormData();
+        const contact = $('#regCustomerContact').val();
+        formData.append("contact", contact);
+        $.ajax({
+            url: 'http://localhost:8080/demo/api/v1/customer/updatecontact/' + customerEmail,
+            type: 'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.msg == "Success") {
+                    displaySuccessToast("Contact Detail Successfull updates")
+                } else {
+                    displayErrorToast(res.data);
+                }
+            }
+        })
+
+
+    }
 
 }

@@ -248,9 +248,10 @@ public class BookingServiceImpl implements BookingService {
         BookingDetail bookingDetail = byId.get();
         return new BookingPendingDTO(bookingDetail.getDetailId(),
                 bookingDetail.getCustomer().getName(),
+                bookingDetail.getRqrdLocation(),
                 bookingDetail.getDateOkBooking().toString(),
                 bookingDetail.getDateOfReturn().toString(),
-                bookingDetail.getDriver()==null ? "No Driver" : bookingDetail.getDriver().getDid(),
+                bookingDetail.getDriver() == null ? "No Driver" : bookingDetail.getDriver().getDid(),
                 bookingDetail.getStatus(),
                 bookingDetail.getRemarks()
         );

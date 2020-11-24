@@ -25,19 +25,35 @@ public class CustomerController {
     private CustomerService service;
 
     @PostMapping(path = "/savecustomer")
-    public ResponseEntity addCustomer(@RequestParam("doc") MultipartFile file,@RequestParam("email") String email,
-                              @RequestParam("address") String address,@RequestParam("name") String name,@RequestParam("password") String password) {
-        Object[] custArr={file,email,address,name,password};
+    public ResponseEntity addCustomer(@RequestParam("doc") MultipartFile file, @RequestParam("email") String email,
+                                      @RequestParam("address") String address, @RequestParam("name") String name, @RequestParam("password") String password) {
+        Object[] custArr = {file, email, address, name, password};
         service.saveCustomer(custArr);
-        return new ResponseEntity(new StandardResponse(200,"Success",null),HttpStatus.CREATED);
+        return new ResponseEntity(new StandardResponse(200, "Success", null), HttpStatus.CREATED);
+    }
+
+
+    @PostMapping(path = "/updateregistered/{email}")
+    public ResponseEntity updateRegistered(@RequestParam("doc") MultipartFile file,
+                                           @RequestParam("address") String address, @RequestParam("name") String name, @RequestParam("password") String password, @RequestParam("repassword") String repassword, @RequestParam("contact") String contact, @PathVariable String email) {
+        System.out.println("Here");
+        Object[] custArr = {file, email, address, name, password, repassword, contact};
+        service.updateCustomer(custArr);
+        return new ResponseEntity(new StandardResponse(200, "Success", null), HttpStatus.CREATED);
+    }
+
+    @PostMapping(path = "/updatecontact/{email}")
+    public ResponseEntity updateContact(@PathVariable String email, @RequestParam("contact") String contact) {
+        service.updateContactOnly(email, contact);
+        return new ResponseEntity(new StandardResponse(200, "Success", null), HttpStatus.CREATED);
     }
 
 
     @GetMapping(path = "/searchcustomer/{val}/{criteria}")
-    public ResponseEntity searchCustomer(@PathVariable String val,@PathVariable String criteria){
+    public ResponseEntity searchCustomer(@PathVariable String val, @PathVariable String criteria) {
         System.out.println("insde");
-        List<CustomerDTO> allWithName = service.getAllWithName(val,criteria);
-        return new ResponseEntity(new StandardResponse(200,"Success",allWithName),HttpStatus.CREATED);
+        List<CustomerDTO> allWithName = service.getAllWithName(val, criteria);
+        return new ResponseEntity(new StandardResponse(200, "Success", allWithName), HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/searchallcustomer")

@@ -20,6 +20,7 @@ public class Customer {
     private String email;
     private String name;
     private String address;
+    private String contact;
     private String document;
     private String password;
     private String salt;
