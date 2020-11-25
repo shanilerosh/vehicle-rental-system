@@ -23,6 +23,9 @@
         <ul class="list-unstyled components">
             <li onclick="loadpendingBookingsToAdminPanel()"><h6>Bookings</h6></li>
         </ul>
+        <ul class="list-unstyled components">
+            <li onclick="loadpendingReturnAndPaymentToAdminPanel()"><h6>Return & Payment</h6></li>
+        </ul>
     </nav>
 
     <div id="content">
@@ -290,24 +293,25 @@
         <div id="bookingDetailManage">
             <h5>Booking Managment</h5>
             <div class="row">
-                <table class="table table-hover">
-                    <thead>
-                    <tr class="table-primary">
-                        <th scope="col">Booking ID</th>
-                        <th scope="col">Customer Name</th>
-                        <th scope="col">Required Location</th>
-                        <th scope="col">Date of Booking</th>
-                        <th scope="col">Date of Return</th>
-                        <th scope="col">Driver ID</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Accept</th>
-                        <th scope="col">Deny</th>
-                    </tr>
-                    </thead>
-                    <tbody id="pendingbookingtbody">
-                    </tbody>
-                </table>
-
+                <div class="table-wrapper-scroll-y my-custom-scrollba">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr class="table-primary">
+                            <th scope="col">Booking ID</th>
+                            <th scope="col">Customer Name</th>
+                            <th scope="col">Required Location</th>
+                            <th scope="col">Date of Booking</th>
+                            <th scope="col">Date of Return</th>
+                            <th scope="col">Driver ID</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Accept</th>
+                            <th scope="col">Deny</th>
+                        </tr>
+                        </thead>
+                        <tbody id="pendingbookingtbody">
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="row"></div>
             <div class="row"></div>
@@ -370,38 +374,46 @@
 <!--        </div>-->
 
 
-
-        <div id="paymentAndReturn">
-            <div class="paymentAndReturnVal"></div>
-            <h5>Return And Payment</h5>
-            <div class="row">
-                <div class="form-group">
-                    <label>Enter Booking ID:</label>
-                    <input type="text" class="form-control-sm" aria-describedby="emailHelp" placeholder="Enter Bid" id="paymentReturnBidText">
-                    <button type="button" class="btn btn-success" onclick="viewBidDetailsFromBid()">Search</button>
+    <div id="paymentAndReturn">
+        <div class="paymentAndReturnVal"></div>
+        <h5 class="mt-4">Return And Payment</h5>
+        <div class="row">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <select class="form-control form-control-sm" id="paymentReturnSelection">
+                                <option>Booking</option>
+                                <option>CustomerName</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control-sm" aria-describedby="emailHelp"
+                               placeholder="Enter Bid / Customer Name" id="paymentReturnBidText"
+                               onkeypress="loadBookingDetailToReturn()">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">BID</th>
+                            <th scope="col">Customer Name</th>
+                            <th scope="col">Obtained Date</th>
+                            <th scope="col">Return Date</th>
+                            <th scope="col">Driver ID</th>
+                            <th scope="col">Payment & Return</th>
+                        </tr>
+                        </thead>
+                        <tbody id="ReturnPaymentTblBody">
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div class="row">
-<!--                To enter to user-->
-                <div class="col-6">
-                    <div class="row">
-                        Returned Date :
-                        <input type="date" id="paymentCustActuallyReturned">
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            Damages
-                            <input type="text" class="form-control form-control-sm" id="paymentDamages">
-                        </div>
-                        <div class="col-6">
-                            Milage
-                            <input type="text" class="form-control form-control-sm" id="paymentMilage" placeholder="col-form-label-sm">
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <button type="button" class="btn btn-info" onclick="calculatePayment()">Calculate Paymenr</button>
-                    </div>
-                </div>
+        </div>
+        <div class="row">
+            <!--                To enter to user-->
             <!--              Damages  Automatically updated -->
             <div class="col-5" id="paymentDetailAutoUpdate" style="display: none">
                 <div class="jumbotron">
@@ -592,6 +604,9 @@
 
     <!--        ?Image viewer for car-->
     <div id="imageViewForCar"></div>
+    <div id="returnViewForReturn"></div>
+    <div id="paymentViewForPayment"></div>
+
 
 </div>
 </div>

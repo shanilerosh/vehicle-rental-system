@@ -6,13 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Id;
+import java.sql.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class ReturnDTO {
-    String rid;
-    String dteOfReturn;
+    int rid;
+    String bid;
     double damages;
+    int milage;
+    Date dteOfReturn;
 }

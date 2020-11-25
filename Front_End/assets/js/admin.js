@@ -498,62 +498,52 @@ function getIndividualSchedule(val) {
 
 }
 
-function viewBidDetailsFromBid() {
-    const bid = $('#paymentReturnBidText').val();
-    console.log(bid);
-    $.ajax({
-        url: 'http://localhost:8080/demo/api/v1/booking/paymentdetail/' + bid,
-        type: 'get',
-        contentType: 'application/json',
-        success: function (res) {
-            if (res.code == 500) {
-                $('.paymentAndReturnVal').children().remove();
-                $('.paymentAndReturnVal').append(`
-                    <div class="alert alert-danger" role="alert">
-  ${res.msg}
+
+function calculatePayment(val) {
+    const bid = val.value;
+    $('#returnViewForReturn').children().remove();
+    $('#returnViewForReturn').append(`<!-- Modal -->
+<div class="modal fade" id="returnAndPaymentModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalScrollableTitle">Booking ID: ${bid} : Record Return And Payment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+    <label>Damages</label>
+    <input type="text" class="form-control form-control-sm" id="returnPaymentDmges" aria-describedby="emailHelp">
+    <small id="emailHelp" class="form-text text-muted">Applicable only if there are any damages</small>
+  </div>
+            </div>
+            <div class="col-6">
+    <label>Milage</label>
+    <input type="text" class="form-control form-control-sm" id="returnPaymentMilage" aria-describedby="emailHelp">
+        </div>
+       </div> 
+        <div class="row">
+        <div class="col-10">
+            <label>Date of Actual Return</label>
+            <input type="date" id="returnPaymentActualReturn">
+        </div>
 </div>
-                `)
-            }
-            $('#paymntCustName').children().remove();
-            $('#paymentCarId').children().remove();
-            $('#paymntDateOfRqrd').children().remove();
-            $('#paymentStartingMilage').children().remove();
-            $('#paymentDetailAutoUpdate').css({display: ''})
-            $('#paymntCustName').append(`<p>Customer Name : ${res.data.customer.name}</p>`);
-            $('#paymentCarId').append(`<p>Car Id : ${res.data.car.reg}</p>`);
-            $('#paymntDateOfRqrd').append(`<p>Starting Date : ${res.data.dateTime}</p>`);
-            $('#paymentStartingMilage').append(`<p>Car Milage : ${res.data.car.milege}</p>`);
-        }
-    })
-}
+  <button type="button" value="${bid}" class="btn btn-primary" onclick="calculatePaymentAmount(this,$('#returnPaymentDmges').val(),$('#returnPaymentMilage').val(),$('#returnPaymentActualReturn').val())">Calculate Payment</button>
+           
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>`)
 
-function calculatePayment() {
-    const actualReturnDate = $('#paymentCustActuallyReturned').val();
-    const carDateOfAquire = $('#paymntDateOfRqrd').children()[0].textContent;
-    const damages = $('#paymentDamages').val();
-    const carEndingMilage = $('#paymentMilage').val();
-    const milage = $('#paymentStartingMilage').children()[0].textContent;
-    const carId = $('#paymentCarId').children()[0].textContent;
-    const startingMilage = milage.slice(12, milage.length).trim();
-    const form = new FormData();
-    form.append('returndate', actualReturnDate);
-    form.append('startdate', startingMilage);
-    form.append('damage', damages);
-    form.append('startmilage', startingMilage);
-    form.append('endingmilage', carEndingMilage);
-    form.append('driver', false);
-    form.append('carId', 1);
-    console.log(form);
-    $.ajax({
-        url: 'http://localhost:8080/demo/api/v1/return/calpayment',
-        type: 'post',
-        data: form,
-        processData: false,
-        contentType: false,
-        success: function (res) {
-        }
-    })
-
+    $('#returnAndPaymentModel').modal('show');
 }
 
 
@@ -713,3 +703,153 @@ function viewCarImages(val) {
 
 
 }
+
+
+function loadpendingReturnAndPaymentToAdminPanel() {
+    $('#admincustomermanage').css({display: 'none'})
+    $('#admincarmanage').css({display: 'none'})
+    $('#paymentAndReturn').css({display: ''})
+    $('#bookingDetailManage').css({display: 'none'})
+}
+
+
+function loadBookingDetailToReturn() {
+    const adminInput = $('#paymentReturnBidText').val().trim();
+    const adminSelection = $('#paymentReturnSelection').val();
+    ``
+    console.log(adminSelection);
+    if (adminInput !== '') {
+        $.ajax({
+            url: 'http://localhost:8080/demo/api/v1/booking/getopen/' + adminSelection + '/' + adminInput,
+            type: 'get',
+            contentType: 'application/json',
+            success: function (res) {
+                console.log(res.data);
+                $('#ReturnPaymentTblBody').children().remove();
+                if (res.data != null) {
+                    for (const data of res.data) {
+                        $('#ReturnPaymentTblBody').append(`
+                <tr>
+                                        <th scope="row">${data.bookingId}</th>
+                                        <td>${data.customerName}</td>
+                                        <td>${data.rqrdLocation}</td>
+                                        <td>${data.dateOfReturn}</td>
+                                        <td>${data.driverId}</td>
+                                        <td>
+                                          <button type="button" class="btn btn-success" value="${data.bookingId}" onclick="calculatePayment(this)">Finalize Payment</button>
+</td>
+                                    </tr>
+`)
+                    }
+                }
+            }
+        });
+    }
+
+
+}
+
+
+function calculatePaymentAmount(val, dmges, milage, dte) {
+    console.log("Comes here")
+    const bid = val.value;
+    if (milage.trim().length == 0) {
+        displayErrorToast("Error! Closing milage in the vehicle is not there")
+    } else if (dte.trim().length == 0) {
+        displayErrorToast("Error! Vehicle actually returned is not there");
+    } else {
+        $('#returnAndPaymentModel').modal('hide');
+
+        $.ajax({
+            url: 'http://localhost:8080/demo/api/v1/return/savereturn',
+            type: 'post',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify({
+                "bid": bid,
+                "damages": dmges,
+                "dteOfReturn": dte
+            }),
+            success: function (res) {
+                if (res.msg === "Success") {
+                    displaySuccessToast("Return has been successully placed")
+                    $('#returnAndPaymentModel').modal('hide');
+                    finalizePayments(bid, dmges, dte, milage, res.data.rid);
+                }
+            }
+
+        });
+
+
+    }
+
+}
+
+
+function finalizePayments(bid, dmges, dte, milage, rid) {
+    const dataSet = new FormData();
+    dataSet.append('rid', rid);
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/payment',
+        type: 'post',
+        data: dataSet,
+        contentType: false,
+        processData: false,
+        success: function (res) {
+            $('#paymentViewForPayment').children().remove();
+            if (res.msg === "Success") {
+                $('#paymentViewForPayment').append(`
+                    <div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <!--Header-->
+    <div class="modal-header">
+    <h4 class="modal-title" id="myModalLabel"><a class="badge badge-info">Payment Details</a></h4>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">×</span>
+</button>
+</div>
+<!--Body-->
+<div class="modal-body">
+    <table class="table table-hover">
+    <thead>
+    <tr>
+    <th>Date of Payment</th>
+    <th>Basis</th>
+    <th>Number of Days</th>
+    <th>Driver Chaargers</th>
+    <th>Total Amount</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td scope="row">${res.data.dteOfPayment}</td>
+       <td><span class="badge badge-secondary">${res.data.isDly == true ? "Daily" : "Monthly"}</span></td>
+<td>${res.data.days}</td>
+<td>${res.data.driverAmt}</td>
+<th>${res.data.totalAmount}</th>
+</tr>
+</tbody>
+</table>
+    <div class="row flex-column align-content-center"><span class="badge badge-success">Total Value : </span> ${(res.data.totalAmount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</div>
+</div>
+<!--Footer-->
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+    </div>
+    </div>
+    </div>
+    </div>                
+                `)
+
+                $('#modalCart').modal('show');
+
+
+            }
+
+        }
+    });
+}
+
+

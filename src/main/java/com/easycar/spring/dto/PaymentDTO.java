@@ -10,11 +10,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentDetailDTO {
-    private int detail;
-    private String dateTime;
-    private String status;
-    private Car car;
-    private Driver driver;
-    private Customer customer;
+public class PaymentDTO {
+    boolean isDly;
+    double totalAmount;
+    double driverAmt;
+    double days;
+    String customrName;
+    String carId;
+    String dteOfPayment;
 }

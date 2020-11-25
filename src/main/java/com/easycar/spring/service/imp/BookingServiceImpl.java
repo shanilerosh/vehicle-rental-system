@@ -228,19 +228,7 @@ public class BookingServiceImpl implements BookingService {
         return carScheduleDTOS;
     }
 
-    @Override
-    public PaymentDetailDTO getPaymentDetail(String bid) {
-        Optional<BookingDetail> byId = bookingDetailsRepo.findById(Integer.parseInt(bid));
-        if(!byId.isPresent()){
-            throw new RuntimeException("Wrong Booking Id,Try again");
-        }
-        BookingDetail bookingDetail = byId.get();
-        Driver driver = bookingDetail.getDriver();
-        Car car = bookingDetail.getCar();
-        Customer customer = bookingDetail.getCustomer();
-        PaymentDetailDTO paymentDetailDTO = new PaymentDetailDTO(bookingDetail.getDetailId(), bookingDetail.getRqrdDateTime().toString(), bookingDetail.getStatus(), car, driver,customer);
-        return paymentDetailDTO;
-    }
+
 
     @Override
     public BookingPendingDTO getBookingDetail(String id) {
@@ -255,5 +243,39 @@ public class BookingServiceImpl implements BookingService {
                 bookingDetail.getStatus(),
                 bookingDetail.getRemarks()
         );
+    }
+
+    @Override
+    public List<BookingPendingDTO> getOpenBookingsForReturn(String selection, String value) {
+        if (selection.equals("Booking")) {
+            System.out.println("Inde booking");
+            if (value.matches("[0-9]+")) {
+                System.out.println("Inside tegex");
+                ArrayList<BookingPendingDTO> list = new ArrayList<>();
+                List<BookingDetail> open = bookingDetailsRepo.findAllByStatusAndDetailIdStartingWith("open", Integer.parseInt(value.trim()));
+                for (BookingDetail bookingDetail : open) {
+                    list.add(new BookingPendingDTO(bookingDetail.getDetailId(), bookingDetail.getCustomer().getName(),
+                            bookingDetail.getRqrdDateTime().toString(), bookingDetail.getDateOkBooking().toString(),
+                            bookingDetail.getDateOfReturn().toString(), bookingDetail.getDriver() == null ? "N/A" : bookingDetail.getDriver().getDid(),
+                            bookingDetail.getStatus(), bookingDetail.getRemarks()));
+                }
+                return list;
+            }
+        } else if (selection.equals("CustomerName")) {
+            List<Customer> allByNameStartingWith = customerRepo.findAllByNameStartingWith(value.trim());
+            ArrayList<BookingPendingDTO> list = new ArrayList<>();
+            for (Customer customer : allByNameStartingWith) {
+                List<BookingDetail> alltheBooking = bookingDetailsRepo.findAllByCustomerAndStatus(customer, "open");
+                for (BookingDetail open : alltheBooking) {
+                    list.add(new BookingPendingDTO(open.getDetailId(), customer.getName(), open.getRqrdDateTime().toString(),
+                            open.getDateOkBooking().toString(), open.getDateOfReturn().toString(), open.getDriver() == null ? "N/A" : open.getDriver().getDid(),
+                            open.getStatus(), open.getRemarks()));
+                }
+
+            }
+
+            return list;
+        }
+        return null;
     }
 }

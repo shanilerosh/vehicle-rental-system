@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
 @Data
@@ -14,11 +15,18 @@ import javax.persistence.*;
 @ToString
 public class Payment {
     @Id
-    private String pid;
-    private String dateOfPayment;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer pid;
+    private Date dateOfPayment;
     private double amount;
 
     @OneToOne()
-    @JoinColumn(name = "r_id",referencedColumnName = "rid")
+    @JoinColumn(name = "r_id", referencedColumnName = "rid")
     private Return _return;
+
+    public Payment(Date dateOfPayment, double amount, Return _return) {
+        this.dateOfPayment = dateOfPayment;
+        this.amount = amount;
+        this._return = _return;
+    }
 }

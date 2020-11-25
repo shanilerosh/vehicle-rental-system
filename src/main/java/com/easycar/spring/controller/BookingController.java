@@ -102,17 +102,16 @@ public class BookingController {
 
 
     @GetMapping(path = "/getcarshedule/{carId}")
-    public ResponseEntity  getCarSchedule(@PathVariable String carId) {
+    public ResponseEntity getCarSchedule(@PathVariable String carId) {
         List<CarScheduleDTO> carSchedule = bookingService.getCarSchedule(carId);
         System.out.println("Comes here ater driver sche");
-        return new ResponseEntity(new StandardResponse(200,"Success",carSchedule),HttpStatus.CREATED);
+        return new ResponseEntity(new StandardResponse(200, "Success", carSchedule), HttpStatus.CREATED);
     }
 
-
-    @GetMapping(path = "/paymentdetail/{bid}")
-    public ResponseEntity  getPaymentDetail(@PathVariable String bid) {
-        PaymentDetailDTO payment = bookingService.getPaymentDetail(bid);
-        return new ResponseEntity(new StandardResponse(200,"Success",payment),HttpStatus.CREATED);
+    @GetMapping(path = "/getopen/{selection}/{value}")
+    public ResponseEntity getOpenBookings(@PathVariable String selection, @PathVariable String value) {
+        List<BookingPendingDTO> bookingOpen = bookingService.getOpenBookingsForReturn(selection, value);
+        return new ResponseEntity(new StandardResponse(200, "Success", bookingOpen), HttpStatus.CREATED);
     }
 
 

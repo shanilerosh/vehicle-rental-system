@@ -1,8 +1,10 @@
 package com.easycar.spring.service.imp;
 
 import com.easycar.spring.dto.ReturnDTO;
+import com.easycar.spring.entity.BookingDetail;
 import com.easycar.spring.entity.Car;
 import com.easycar.spring.entity.Return;
+import com.easycar.spring.repo.BookingDetailsRepo;
 import com.easycar.spring.repo.CarRepo;
 import com.easycar.spring.repo.ReturnRepo;
 import com.easycar.spring.service.ReturnService;
@@ -30,6 +32,9 @@ public class ReturnServiceImpl implements ReturnService {
 
     @Autowired
     CarRepo carRepo;
+
+    @Autowired
+    BookingDetailsRepo bookingDetailsRepo;
 
     @Override
     public void calculatePaymentAndReturn(String[] data) {
@@ -62,14 +67,26 @@ public class ReturnServiceImpl implements ReturnService {
             int monthlyFreeKm=car.getFreeKmPerMonth()*months;
             if(userMilage>monthlyFreeKm){
                 double additional = (userMilage - monthlyFreeKm) * car.getPricePerExtrakm();
-                totalValue+=additional;
+                totalValue += additional;
             }
         }
-        totalValue+=damage;
+        totalValue += damage;
 
-        if(driver){
-            totalValue+=(days*1000);
+        if (driver) {
+            totalValue += (days * 1000);
         }
         System.out.println(totalValue);
+    }
+
+    @Override
+    public ReturnDTO saveReturn(ReturnDTO dto) {
+        Date date = Date.valueOf(LocalDate.parse(dto.getDteOfReturn().toString()));
+        BookingDetail bd = bookingDetailsRepo.getOne(Integer.parseInt(dto.getBid()));
+
+        if (bd.getRqrdDateTime().after(date)) {
+            throw new RuntimeException("Error return date cannot be before the obtained date");
+        }
+        Return save = returnRepo.save(new Return(dto.getMilage(), date, dto.getDamages(), bd));
+        return new ReturnDTO(save.getRid(), Integer.toString(bd.getDetailId()), dto.getDamages(), dto.getMilage(), dto.getDteOfReturn());
     }
 }

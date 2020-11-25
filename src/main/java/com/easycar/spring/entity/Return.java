@@ -3,6 +3,8 @@ package com.easycar.spring.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Date;
+
 
 @Getter
 @Setter
@@ -13,14 +15,22 @@ import javax.persistence.*;
 @Table(name = "CustomerReturn")
 public class Return {
     @Id
-    String rid;
-    String dteOfReturn;
-    double damages;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int rid;
+    private int milage;
+    private Date dteOfReturn;
+    private double damages;
     @OneToOne()
-    @JoinColumn(name = "bd_col",referencedColumnName = "detailId")
-    private  BookingDetail bookingDetail;
+    @JoinColumn(name = "bd_col", referencedColumnName = "detailId")
+    private BookingDetail bookingDetail;
 
-    @OneToOne(mappedBy = "_return",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "_return", cascade = CascadeType.ALL)
     private Payment payment;
+
+    public Return(int milage, Date dteOfReturn, double damages, BookingDetail bookingDetail) {
+        this.milage = milage;
+        this.dteOfReturn = dteOfReturn;
+        this.damages = damages;
+        this.bookingDetail = bookingDetail;
+    }
 }
