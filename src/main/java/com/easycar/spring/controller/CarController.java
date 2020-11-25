@@ -35,20 +35,41 @@ public class CarController {
                                  @RequestParam("carImageFront") MultipartFile carImageFront, @RequestParam("carImageSide") MultipartFile carImageSide, @RequestParam("carImageBack") MultipartFile carImageBack,
                                  @RequestParam("transmissionType") String transmissionType, @RequestParam("fuelType") String fuelType,
                                  @RequestParam("carDeposit") String carDeposit, @RequestParam("carMilage") String carMilage
-    ){
+    ) {
 
         Object[] dataSet = {
                 carName, carBrand, carRegNumber, Double.parseDouble(carMonthyRate), Double.parseDouble(carDailyRate), Integer.parseInt(carFreeKmPerDay),
                 Integer.parseInt(carFreeKmPerMonth), Double.parseDouble(carPricePerExtraKm), Integer.parseInt(carNumberOfPassenger), carColor, carImageInterior, carImageFront,
                 carImageSide, carImageBack, carType, carState, transmissionType, fuelType, carDeposit, carMilage};
         carService.addCar(dataSet);
-        return new ResponseEntity(new StandardResponse(200,"Success",null),HttpStatus.CREATED);
+        return new ResponseEntity(new StandardResponse(200, "Success", null), HttpStatus.CREATED);
     }
 
+
+    @PostMapping(path = "/updatecar")
+    public ResponseEntity updateCar(@RequestParam("carName") String carName, @RequestParam("carType") String carType,
+                                    @RequestParam("carState") String carState, @RequestParam("carBrand") String carBrand, @RequestParam("carRegNumber") String carRegNumber,
+                                    @RequestParam("carMonthyRate") String carMonthyRate, @RequestParam("carDailyRate") String carDailyRate,
+                                    @RequestParam("carFreeKmPerDay") String carFreeKmPerDay, @RequestParam("carFreeKmPerMonth") String carFreeKmPerMonth,
+                                    @RequestParam("carPricePerExtraKm") String carPricePerExtraKm, @RequestParam("carNumberOfPassenger") String carNumberOfPassenger,
+                                    @RequestParam("carColor") String carColor, @RequestParam("carImageInterior") MultipartFile carImageInterior,
+                                    @RequestParam("carImageFront") MultipartFile carImageFront, @RequestParam("carImageSide") MultipartFile carImageSide, @RequestParam("carImageBack") MultipartFile carImageBack,
+                                    @RequestParam("transmissionType") String transmissionType, @RequestParam("fuelType") String fuelType,
+                                    @RequestParam("carDeposit") String carDeposit, @RequestParam("carMilage") String carMilage
+    ) {
+        Object[] dataSet = {
+                carName, carBrand, carRegNumber, Double.parseDouble(carMonthyRate), Double.parseDouble(carDailyRate), Integer.parseInt(carFreeKmPerDay),
+                Integer.parseInt(carFreeKmPerMonth), Double.parseDouble(carPricePerExtraKm), Integer.parseInt(carNumberOfPassenger), carColor, carImageInterior, carImageFront,
+                carImageSide, carImageBack, carType, carState, transmissionType, fuelType, carDeposit, carMilage};
+        carService.updateCar(dataSet);
+        return new ResponseEntity(new StandardResponse(200, "Success", null), HttpStatus.CREATED);
+    }
+
+
     @GetMapping
-    public ResponseEntity getAll(){
+    public ResponseEntity getAll() {
         List<CarDTO> allCars = carService.getAllCars();
-        return new ResponseEntity(new StandardResponse(200,"Success",allCars),HttpStatus.CREATED);
+        return new ResponseEntity(new StandardResponse(200, "Success", allCars), HttpStatus.CREATED);
     }
 
 

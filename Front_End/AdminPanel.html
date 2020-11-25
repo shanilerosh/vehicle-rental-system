@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="assets/bootswatch/bootstrap.min%20_litera.css">
+
 </head>
 <body style="font-family: Helvetica">
+<link rel="stylesheet" href="assets/bootswatch/bootstrap.min%20_litera.css">
 <link rel="stylesheet" href="assets/toast/jquery.toast.min.css">
 <link rel="stylesheet" href="style.css">
 <div class="wrapper">
@@ -20,7 +21,7 @@
             <li onclick="loadAdminCarManager()"><h6>Manage Cars</h6></li>
         </ul>
         <ul class="list-unstyled components">
-            <li onclick=""><h6>Bookings</h6></li>
+            <li onclick="loadpendingBookingsToAdminPanel()"><h6>Bookings</h6></li>
         </ul>
     </nav>
 
@@ -240,6 +241,7 @@
                                         </div>
                                     </div>
                                     <button type="button" class="btn btn-success" onclick="saveCar()">Add Car</button>
+                            <button type="button" class="btn btn-primary" onclick="updateCar()">Update Car</button>
                                 </form>
                             </div>
 
@@ -272,75 +274,46 @@
                                             </tr>
                                             </thead>
                                             <tbody id="carViewTableBody">
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                            </tr>
-
                                             </tbody>
                                         </table>
 
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-
-
                     </div>
                 </div>
 
 
-<!--        <div id="bookingDetailManage">-->
-<!--            <div class="row">-->
-<!--                <table class="table table-hover">-->
-<!--                    <thead>-->
-<!--                    <tr class="table-primary" >-->
-<!--                        <th scope="col">Booking ID</th>-->
-<!--                        <th scope="col">Customer Name</th>-->
-<!--                        <th scope="col">Required Location</th>-->
-<!--                        <th scope="col">Date of Booking</th>-->
-<!--                        <th scope="col">Date of Return</th>-->
-<!--                        <th scope="col">Driver ID</th>-->
-<!--                        <th scope="col">Status</th>-->
-<!--                        <th scope="col">Accept</th>-->
-<!--                        <th scope="col">Deny</th>-->
-<!--                    </tr>-->
-<!--                    </thead>-->
-<!--                    <tbody id="pendingbookingtbody">-->
-<!--                    <tr>-->
-<!--                        <th scope="row">1</th>-->
-<!--                        <td>Mark</td>-->
-<!--                        <td>Otto</td>-->
-<!--                        <td>@mdo</td>-->
-<!--                        <td>Mark</td>-->
-<!--                        <td>Otto</td>-->
-<!--                        <td>@mdo</td>-->
-<!--                        <td>@mdo</td>-->
-<!--                        <td>@mdo</td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <th scope="row">2</th>-->
-<!--                        <td>Jacob</td>-->
-<!--                        <td>Thornton</td>-->
-<!--                        <td>@fat</td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <th scope="row">3</th>-->
-<!--                        <td colspan="2">Larry the Bird</td>-->
-<!--                        <td>@twitter</td>-->
-<!--                    </tr>-->
-<!--                    </tbody>-->
-<!--                </table>-->
+            </div>
+        </div>
 
-<!--            </div>-->
-<!--            <div class="row"></div>-->
-<!--            <div class="row"></div>-->
-<!--        </div>-->
 
-<!--    </div>-->
+        <div id="bookingDetailManage">
+            <h5>Booking Managment</h5>
+            <div class="row">
+                <table class="table table-hover">
+                    <thead>
+                    <tr class="table-primary">
+                        <th scope="col">Booking ID</th>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Required Location</th>
+                        <th scope="col">Date of Booking</th>
+                        <th scope="col">Date of Return</th>
+                        <th scope="col">Driver ID</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Accept</th>
+                        <th scope="col">Deny</th>
+                    </tr>
+                    </thead>
+                    <tbody id="pendingbookingtbody">
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="row"></div>
+            <div class="row"></div>
+        </div>
+
+    </div>
 
 
 
@@ -603,17 +576,22 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="changeCarToPreferedState(this)" value="Availabe">Mark As Available</button>
-                <button type="button" class="btn btn-primary" onclick="changeCarToPreferedState(this)" value="Occupied">Mark As Occupies</button>
-                <button type="button" class="btn btn-primary" onclick="changeCarToPreferedState(this)" value="Maintainance">Mark As Maintainance</button>
+                <button type="button" class="btn btn-primary" onclick="changeCarToPreferedState(this)" value="Availabe">
+                    Mark As Available
+                </button>
+                <button type="button" class="btn btn-primary" onclick="changeCarToPreferedState(this)" value="Occupied">
+                    Mark As Occupies
+                </button>
+                <button type="button" class="btn btn-primary" onclick="changeCarToPreferedState(this)"
+                        value="Maintainance">Mark As Maintainance
+                </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
 
 
-
-
-
+    <!--        ?Image viewer for car-->
+    <div id="imageViewForCar"></div>
 
 </div>
 </div>

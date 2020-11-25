@@ -1,4 +1,8 @@
 $('#admincustomermanage').css({display: 'none'})
+$('#admincarmanage').css({display: 'none'})
+$('#paymentAndReturn').css({display: 'none'})
+$('#bookingDetailManage').css({display: 'none'})
+
 let currentDriver = '';
 let altDriver = '';
 let selectedCarForSchdule = '';
@@ -41,13 +45,36 @@ function saveCar() {
         success: function (res) {
             if (res.msg == "Success") {
                 displaySuccessToast("Car Successfully Created.")
+                loadCarListing();
+                clearAllCarSaveFields();
             } else {
                 displayErrorToast(res.data);
-                clearAllCarSaveFields();
             }
         }
     });
 }
+
+
+function updateCar() {
+    let formData = new FormData($('#carAddForm')[0]);
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/car/updatecar',
+        type: 'post',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (res) {
+            if (res.msg == "Success") {
+                displaySuccessToast("Car Successfully updated.");
+                clearAllCarSaveFields();
+            } else {
+                displayErrorToast(res.data);
+            }
+        }
+    });
+    loadCarListing();
+}
+
 
 function displayWarningToast(msg) {
     $.toast({
@@ -108,13 +135,13 @@ function clearAllCarSaveFields() {
     $('#carColor').val('');
     $('#carDeposit').val('');
     $('#carMilage').val('');
-
 }
 
 function loadAdminCustomerManager() {
     $('#admincustomermanage').css({display: ''});
     $('#admincarmanage').css({display: 'none'});
     $('#paymentAndReturn').css({display: 'none'});
+    $('#bookingDetailManage').css({display: 'none'})
     searchCustomer();
 }
 
@@ -122,6 +149,8 @@ function loadAdminCarManager() {
     $('#admincustomermanage').css({display: 'none'});
     $('#admincarmanage').css({display: ''});
     $('#paymentAndReturn').css({display: 'none'})
+    $('#bookingDetailManage').css({display: 'none'})
+    loadCarListing();
 }
 
 
@@ -172,6 +201,12 @@ function loadToImage(path) {
 
 
 function loadpendingBookingsToAdminPanel() {
+    $('#admincustomermanage').css({display: 'none'})
+    $('#admincarmanage').css({display: 'none'})
+    $('#paymentAndReturn').css({display: 'none'})
+    $('#bookingDetailManage').css({display: ''})
+
+
     $('#pendingbookingtbody').children().remove();
 
     $.ajax({
@@ -521,11 +556,69 @@ function calculatePayment() {
 
 }
 
+
+function loadCarDetailToTheFields(selected) {
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/car/getbucket/' + selected,
+        type: 'get',
+        contentType: 'application/json',
+        success: function (res) {
+            console.log(res);
+            if (res.data !== null) {
+                $('#carName').val(res.data.name);
+                $('#carBrand').val(res.data.brand);
+                $('#carRegNumber').val(res.data.registrationNumb);
+                $('#carMonthlyRate').val(res.data.mnthlyRate);
+                $('#carDailyRate').val(res.data.dlyRate);
+                $('#carFreeKmPerDay').val(res.data.freeKmPerDay);
+                $('#carFreeKmPerMonth').val(res.data.freeKmPerMonth);
+                $('#carPricePerExtraKm').val(res.data.pricePerExtrakm);
+                $('#carNumberOfPassenger').val(res.data.nmberOfPssngers);
+                $('#carColor').val(res.data.color);
+                $('#carDeposit').val(res.data.deposit);
+                $('#carMilage').val(res.data.milege);
+                $('#carStateSelect').val(res.data.carState);
+                $('#carTransType').val(res.data.transmissionType);
+                $('#carFuelType').val(res.data.fuelType);
+                $('#carTypeSelect').val(res.data.carType);
+            }
+        }
+    })
+}
+
 function loadCarListing() {
     const carSearchCriteria = $('#carSearchCriteria').val();
     const carUserInput = $('#caSearchValue').val();
     console.log(carUserInput);
-    if (carUserInput !== '') {
+    if (carUserInput === '') {
+        $.ajax({
+            url: 'http://localhost:8080/demo/api/v1/car/searchCars/Type/Premium',
+            type: 'get',
+            contentType: 'application/json',
+            success: function (res) {
+                $('#carViewTableBody').children().remove();
+                for (const data of res.data) {
+                    $('#carViewTableBody tr').off('click');
+                    $('#carViewTableBody').append(`
+            <tr>
+                <th scope="row">${data.reg}</th>
+                <td>${data.brand}</td>
+                <td>${data.carType}</td>
+                <td>${data.transmissionType}</td>
+                <td>${data.carState}</td>
+                <td>${data.carState}</td>
+                <td><button type="button" class="btn btn-outline-success" onclick="viewCarImages(this)" value="${data.reg}">Images</button></td>
+                                            </tr>`)
+                    $('#carViewTableBody tr').on('click', (e) => {
+                        const selected = e.currentTarget.children[0].innerText;
+                        loadCarDetailToTheFields(selected);
+
+
+                    })
+                }
+            }
+        })
+    } else if (carUserInput !== '') {
         $.ajax({
             url: 'http://localhost:8080/demo/api/v1/car/searchCars/' + carSearchCriteria + '/' + carUserInput,
             type: 'get',
@@ -533,6 +626,7 @@ function loadCarListing() {
             success: function (res) {
                 $('#carViewTableBody').children().remove();
                 for (const data of res.data) {
+                    $('#carViewTableBody tr').off('click');
                     $('#carViewTableBody').append(`
             <tr>
                 <th scope="row">${data.reg}</th>
@@ -543,6 +637,12 @@ function loadCarListing() {
                 <td>${data.carState}</td>
                 <td><button type="button" class="btn btn-primary" onclick="viewCarImages(this)" value="${data.reg}">Images</button></td>
                                             </tr>`)
+                    $('#carViewTableBody tr').on('click', (e) => {
+                        const selected = e.currentTarget.children[0].innerText;
+                        loadCarDetailToTheFields(selected);
+
+
+                    })
                 }
             }
         })
@@ -553,6 +653,63 @@ function loadCarListing() {
 
 function viewCarImages(val) {
     const selection = val.value;
+
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/car/getbucket/' + selection,
+        type: 'get',
+        contentType: 'application/json',
+        success: function (res) {
+            $('#imageViewForCar').children().remove();
+            const frntImg = res.data.frntImg.slice(90, res.data.frntImg.length);
+            const bckImg = res.data.bckImg.slice(90, res.data.bckImg.length);
+            const sideImg = res.data.sideImg.slice(90, res.data.sideImg.length);
+            const interiorImge = res.data.frntImg.slice(90, res.data.interiorImge.length);
+            console.log(res.data.reg + " Interior " + interiorImge);
+            $('#imageViewForCar').append(`<div class="modal" tabindex="-1" role="dialog" id="imageViewForCarModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Car Images for Car ${selection}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block w-100" src="${frntImg}" alt="First slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="${bckImg}" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="${sideImg}" alt="Third slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="${interiorImge}" alt="Third slide">
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>`);
+            console.log("Comes to here")
+            $('#imageViewForCarModal').modal('show');
+        }
+    })
 
 
 }
