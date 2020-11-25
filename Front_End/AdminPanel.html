@@ -15,6 +15,9 @@
             <h3>Admin Panel</h3>
         </div>
         <ul class="list-unstyled components">
+            <li onclick="loadAdminDashboard()"><h6>Dashboard</h6></li>
+        </ul>
+        <ul class="list-unstyled components">
             <li onclick="loadAdminCustomerManager()"><h6>Manage Customer</h6></li>
         </ul>
         <ul class="list-unstyled components">
@@ -29,7 +32,22 @@
     </nav>
 
     <div id="content">
-        <!--        Append to this-->
+
+        <div id="adminDashboard">
+            <div class="row">
+                <div class="col-5">
+                    <div class="card text-white bg-primary mb-3 m" style="min-width: 16rem">
+                        <div class="card-body">
+                            <h5 class="card-title">Primary card title</h5>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
         <div id="admincustomermanage">
             <div class="container-fluid">
                 <h5>Customer Confirmation</h5>
@@ -317,6 +335,66 @@
             <div class="row"></div>
         </div>
 
+        <div id="paymentAndReturn">
+            <div class="paymentAndReturnVal"></div>
+            <h5 class="mt-4">Return And Payment</h5>
+            <div class="row">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <select class="form-control form-control-sm" id="paymentReturnSelection">
+                                    <option>Booking</option>
+                                    <option>CustomerName</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" class="form-control-sm" aria-describedby="emailHelp"
+                                   placeholder="Enter Bid / Customer Name" id="paymentReturnBidText"
+                                   onkeypress="loadBookingDetailToReturn()">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">BID</th>
+                                <th scope="col">Customer Name</th>
+                                <th scope="col">Obtained Date</th>
+                                <th scope="col">Return Date</th>
+                                <th scope="col">Driver ID</th>
+                                <th scope="col">Payment & Return</th>
+                            </tr>
+                            </thead>
+                            <tbody id="ReturnPaymentTblBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!--                To enter to user-->
+                <!--              Damages  Automatically updated -->
+                <div class="col-5" id="paymentDetailAutoUpdate" style="display: none">
+                    <div class="jumbotron">
+                        <div class="row">
+                            <div id="paymntCustName"></div>
+                            <div id="paymentCarId"></div>
+                        </div>
+                        <div class="row">
+                            <div id="paymntDateOfRqrd"></div>
+                            <div id="paymentDateOfReturn"></div>
+                        </div>
+                        <div class="row">
+                            <div id="paymntDriverName"></div>
+                            <div id="paymentStartingMilage"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
 
@@ -374,80 +452,7 @@
 <!--        </div>-->
 
 
-    <div id="paymentAndReturn">
-        <div class="paymentAndReturnVal"></div>
-        <h5 class="mt-4">Return And Payment</h5>
-        <div class="row">
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <select class="form-control form-control-sm" id="paymentReturnSelection">
-                                <option>Booking</option>
-                                <option>CustomerName</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <input type="text" class="form-control-sm" aria-describedby="emailHelp"
-                               placeholder="Enter Bid / Customer Name" id="paymentReturnBidText"
-                               onkeypress="loadBookingDetailToReturn()">
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <table class="table">
-                        <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">BID</th>
-                            <th scope="col">Customer Name</th>
-                            <th scope="col">Obtained Date</th>
-                            <th scope="col">Return Date</th>
-                            <th scope="col">Driver ID</th>
-                            <th scope="col">Payment & Return</th>
-                        </tr>
-                        </thead>
-                        <tbody id="ReturnPaymentTblBody">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <!--                To enter to user-->
-            <!--              Damages  Automatically updated -->
-            <div class="col-5" id="paymentDetailAutoUpdate" style="display: none">
-                <div class="jumbotron">
-                    <div class="row">
-                        <div id="paymntCustName"></div>
-                        <div id="paymentCarId"></div>
-                    </div>
-                    <div class="row">
-                        <div id="paymntDateOfRqrd"></div>
-                        <div id="paymentDateOfReturn"></div>
-                    </div>
-                    <div class="row">
-                        <div id="paymntDriverName"></div>
-                        <div id="paymentStartingMilage"></div>
-                    </div>
-                </div>
-            </div>
-
-            </div>
-<!--            Caculated Details-->
-            <div class="row mt-3">
-                <div class="jumbotron jumbotron-fluid">
-                    <div class="container">
-                        <h1 class="display-4">Fluid jumbotron</h1>
-                        <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-
-<!--    Accept Model with Driver-->
+    <!--    Accept Model with Driver-->
     <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="acceptModel">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">

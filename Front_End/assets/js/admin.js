@@ -2,7 +2,7 @@ $('#admincustomermanage').css({display: 'none'})
 $('#admincarmanage').css({display: 'none'})
 $('#paymentAndReturn').css({display: 'none'})
 $('#bookingDetailManage').css({display: 'none'})
-
+loadAdminDashboard();
 let currentDriver = '';
 let altDriver = '';
 let selectedCarForSchdule = '';
@@ -143,6 +143,16 @@ function loadAdminCustomerManager() {
     $('#paymentAndReturn').css({display: 'none'});
     $('#bookingDetailManage').css({display: 'none'})
     searchCustomer();
+}
+
+
+function loadAdminDashboard() {
+    $('#admincustomermanage').css({display: 'none'});
+    $('#admincarmanage').css({display: 'none'});
+    $('#paymentAndReturn').css({display: 'none'});
+    $('#bookingDetailManage').css({display: 'none'})
+    $('#AdminDashboard').css({display: ''})
+
 }
 
 function loadAdminCarManager() {
