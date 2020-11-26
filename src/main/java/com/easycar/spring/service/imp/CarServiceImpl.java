@@ -330,4 +330,9 @@ public class CarServiceImpl implements CarService {
         Integer integer = carRepo.countAllByMilegeGreaterThan(5000);
         return integer;
     }
+
+    @Override
+    public ArrayList<String> getCarsForMain() {
+        return null;
+    }
 }

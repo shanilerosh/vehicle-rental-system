@@ -141,6 +141,7 @@ public class BookingDetail {
         this.driver = driver;
     }
 
+    @JsonBackReference
     public Return get_return() {
         return _return;
     }

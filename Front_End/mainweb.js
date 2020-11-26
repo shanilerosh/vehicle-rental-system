@@ -44,14 +44,17 @@ function renderCarsByFilter() {
                 console.log(res);
                 if(res.msg==="Success"){
                     for (let resp of res.data) {
-                        console.log(resp);
                         console.log(resp.frntImg);
                         const imgSrc = resp.frntImg.slice(90, resp.frntImg.length);
                         console.log(imgSrc);
                         $('#carsToMainPage').append(`<div class="card ml-3 mt-4" style="width: 18rem;">
   <img class="card-img-top" src="${imgSrc}" alt="Card image cap" style="width: 18rem; height: 15rem">
   <div class="card-body">
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <p class="card-text">Car Registration : ${resp.registrationNumb}</p>
+    <p class="card-text">Car color : ${resp.color}</p>  
+    <p class="card-text">Car Brand : ${resp.brand}</p>  
+    <p class="card-text">Car Passengers : ${resp.nmberOfPssngers}</p>
+    <button type="button" class="btn btn-success" value="${resp.reg}" onclick="viewMoreDetailsOfCar(this)">More Info</button>
   </div>
 </div>`)
                 }

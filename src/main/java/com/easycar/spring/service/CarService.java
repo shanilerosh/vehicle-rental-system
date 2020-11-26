@@ -28,4 +28,6 @@ public interface CarService {
     ArrayList<Integer> getAvailbleAndReserved();
 
     Integer findCarsForMaintainance();
+
+    ArrayList<String> getCarsForMain();
 }

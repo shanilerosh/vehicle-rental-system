@@ -1,20 +1,31 @@
-$('#customerOrder').css({display:'none'});
-$('#bookingMngt').css({display:'none'});
+$('#customerOrder').css({display: 'none'});
+$('#bookingMngt').css({display: 'none'});
 $('#viewTheBucket').css({display: 'none'});
 $('#profileSettings').css({display: 'none'});
 
-let lisOfBookings=[];
+let lisOfBookings = [];
 let listOfAllCars = '';
 let isEditable = false;
-// let customerEmail=localStorage.getItem('custId');
-let customerEmail='ayesh@123';
+let customerEmail = sessionStorage.getItem("custEmail");
+console.log(customerEmail);
 localStorage.clear();
 loadCarForRegsitered();
 countBookingDetails();
 
+
+setInterval(function () {
+    const item = sessionStorage.getItem("custEmail");
+
+    if (item == null) {
+        alert("Error your account has been logged out please login again")
+    }
+
+}, 3000);
+
+
 function loadCarForRegsitered() {
     $('#displayAlltheCars').children().remove();
-    let x=$('#displayAlltheCars').append(`<div class="row" id="tem0">`)
+    let x = $('#displayAlltheCars').append(`<div class="row" id="tem0">`)
     $.ajax({
         url: 'http://localhost:8080/demo/api/v1/car',
         type: 'get',
@@ -204,6 +215,7 @@ function finalizeBooking() {
         success: function (res) {
             $('.bucketVal').children().remove();
             if(res.msg=="Success") {
+                displaySuccessToast("You Booking has been successfully placed");
                 for (let i = 0; i < lisOfBookings.length; i++) {
                     if(lisOfBookings[i].registration===crid){
                         lisOfBookings.splice(i,1);
@@ -232,11 +244,13 @@ function validateBookingFields() {
 
 function getOrdersBasedOnStatus() {
     const option = $('#orderSortOption').val();
+    console.log(option);
     $.ajax({
-        url: 'http://localhost:8080/demo/api/v1/booking/getonstatus/'+customerEmail+'/'+option,
+        url: 'http://localhost:8080/demo/api/v1/booking/getonstatus/' + customerEmail + '/' + option,
         type: 'get',
         contentType: 'application/json',
         success: function (res) {
+            console.log(res.data);
             $('#orderStatustbody').children().remove();
             for (const data of res.data) {
                 console.log(data);
@@ -344,7 +358,7 @@ function viewDetailOfBookingMgt(val) {
         contentType: 'application/json',
         success: function (res) {
             console.log(res.data);
-            if (res.data.status === "apending") {
+            if (res.data.status === "pending") {
                 $('#bookingDetailPendingStatus').modal('show');
             } else if (res.data.status === "pending") {
                 $('#bookingDetailOpenStatusDes').children().remove();

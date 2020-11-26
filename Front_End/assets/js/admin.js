@@ -145,6 +145,7 @@ function loadAdminCustomerManager() {
     $('#admincarmanage').css({display: 'none'});
     $('#paymentAndReturn').css({display: 'none'});
     $('#bookingDetailManage').css({display: 'none'})
+    $('#carSchedule').css({display: 'none'})
     searchCustomer();
 }
 
@@ -161,6 +162,7 @@ function loadAdminDashboard() {
     $('#paymentAndReturn').css({display: 'none'});
     $('#bookingDetailManage').css({display: 'none'})
     $('#adminDashboard').css({display: ''})
+    $('#carSchedule').css({display: 'none'})
 
 }
 
@@ -170,6 +172,17 @@ function loadAdminCarManager() {
     $('#paymentAndReturn').css({display: 'none'})
     $('#bookingDetailManage').css({display: 'none'})
     $('#adminDashboard').css({display: 'none'})
+    $('#carSchedule').css({display: 'none'})
+    loadCarListing();
+}
+
+function loadCarSchedule() {
+    $('#admincustomermanage').css({display: 'none'});
+    $('#admincarmanage').css({display: 'none'});
+    $('#paymentAndReturn').css({display: 'none'})
+    $('#bookingDetailManage').css({display: 'none'})
+    $('#adminDashboard').css({display: 'none'})
+    $('#carSchedule').css({display: ''})
     loadCarListing();
 }
 
@@ -226,7 +239,7 @@ function loadpendingBookingsToAdminPanel() {
     $('#paymentAndReturn').css({display: 'none'})
     $('#bookingDetailManage').css({display: ''})
     $('#adminDashboard').css({display: 'none'})
-
+    $('#carSchedule').css({display: 'none'})
     $('#pendingbookingtbody').children().remove();
 
     $.ajax({
@@ -954,5 +967,6 @@ function loadCarThatNeedMaintainance() {
         }
     });
 }
+
 
 

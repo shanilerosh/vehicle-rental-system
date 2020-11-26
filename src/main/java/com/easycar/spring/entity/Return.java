@@ -1,5 +1,6 @@
 package com.easycar.spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,8 +21,10 @@ public class Return {
     private int milage;
     private Date dteOfReturn;
     private double damages;
+
     @OneToOne()
     @JoinColumn(name = "bd_col", referencedColumnName = "detailId")
+    @JsonManagedReference
     private BookingDetail bookingDetail;
 
     @OneToOne(mappedBy = "_return", cascade = CascadeType.ALL)

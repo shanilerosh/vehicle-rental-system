@@ -36,6 +36,7 @@ public class Driver {
         return driverStatus;
     }
 
+    @JsonIgnore
     @JsonManagedReference
     public List<BookingDetail> getBookingDetails() {
         return bookingDetails;

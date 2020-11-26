@@ -94,9 +94,8 @@ function savecustomer() {
 </div>`)
 
                         if(res.data.role==="customer"){
-                            localStorage.setItem('custId',res.data.partyId);
-                            console.log(customerEmail);
-                            window.location.href="registereduserpage.html"
+                            sessionStorage.setItem("custEmail", res.data.partyId)
+                            window.location.href = "registereduserpage.html"
                         }
 
 

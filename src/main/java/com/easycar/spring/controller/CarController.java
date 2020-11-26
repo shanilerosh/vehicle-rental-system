@@ -7,6 +7,7 @@ import com.easycar.spring.repo.CarRepo;
 import com.easycar.spring.service.CarService;
 import com.easycar.spring.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -121,6 +122,12 @@ public class CarController {
     public ResponseEntity findCarsForMain() {
         Integer count = carService.findCarsForMaintainance();
         return new ResponseEntity(new StandardResponse(200, "Success", count), HttpStatus.CREATED);
+    }
+
+
+    @GetMapping(path = "/findcarsformaintainance")
+    public ResponseEntity findCarForMain() {
+        return new ResponseEntity(new StandardResponse(200, "Success", null), HttpStatus.CREATED);
     }
 
 

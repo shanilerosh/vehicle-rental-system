@@ -36,4 +36,5 @@ public interface CarRepo extends JpaRepository<Car, Integer> {
      Integer countByCarState(String state);
 
      Integer countAllByMilegeGreaterThan(int milage);
+
 }

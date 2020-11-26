@@ -1,31 +1,28 @@
 package com.easycar.spring.controller;
 
 import com.easycar.spring.dto.*;
-import com.easycar.spring.entity.BookingDetail;
-import com.easycar.spring.entity.Driver;
-import com.easycar.spring.repo.BookingDetailsRepo;
-import com.easycar.spring.repo.DriverRepo;
 import com.easycar.spring.service.BookingService;
 import com.easycar.spring.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
+@EnableScheduling
 @CrossOrigin
 @RequestMapping("api/v1/booking")
 public class BookingController {
 
     @Autowired
     private BookingService bookingService;
+
 
     @PostMapping(path = "/bookingdetail")
     public ResponseEntity addBooking(@RequestParam("bcktLocation") String bcktLocation, @RequestParam("bcktPckUp") String bcktPckUp,
@@ -122,6 +119,5 @@ public class BookingController {
         Integer count = bookingService.getActiveBooking("open");
         return new ResponseEntity(new StandardResponse(200, "Success", count), HttpStatus.CREATED);
     }
-
 
 }
