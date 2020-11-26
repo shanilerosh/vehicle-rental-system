@@ -59,14 +59,20 @@ public class CustomerController {
     @GetMapping(path = "/searchallcustomer")
     public ResponseEntity searchCustomer(){
         List<CustomerDTO> allCustomers = service.searchAllCustomer();
-        return new ResponseEntity(new StandardResponse(200,"Success",allCustomers),HttpStatus.CREATED);
+        return new ResponseEntity(new StandardResponse(200, "Success", allCustomers), HttpStatus.CREATED);
     }
 
 
     @GetMapping(path = "/searchonecustomer/{email}")
-    public ResponseEntity searchSingleCustomer(@PathVariable String email){
-        System.out.println(email+" called");
+    public ResponseEntity searchSingleCustomer(@PathVariable String email) {
+        System.out.println(email + " called");
         CustomerDTO customerDTO = service.searchSingleCustomer(email);
-        return new ResponseEntity(new StandardResponse(200,"Success",customerDTO),HttpStatus.CREATED);
+        return new ResponseEntity(new StandardResponse(200, "Success", customerDTO), HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/customercount")
+    public ResponseEntity searchSingleCustomer() {
+        int count = service.getCustomerCount();
+        return new ResponseEntity(new StandardResponse(200, "Success", count), HttpStatus.CREATED);
     }
 }

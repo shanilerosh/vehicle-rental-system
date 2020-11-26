@@ -2,10 +2,12 @@ $('#admincustomermanage').css({display: 'none'})
 $('#admincarmanage').css({display: 'none'})
 $('#paymentAndReturn').css({display: 'none'})
 $('#bookingDetailManage').css({display: 'none'})
+$('#adminDashboard').css({display: 'none'});
 loadAdminDashboard();
 let currentDriver = '';
 let altDriver = '';
 let selectedCarForSchdule = '';
+
 
 // function loadCustomersStatus() {
 //     $('#admincustomermanage').css({display: ''})
@@ -138,6 +140,7 @@ function clearAllCarSaveFields() {
 }
 
 function loadAdminCustomerManager() {
+    $('#adminDashboard').css({display: 'none'});
     $('#admincustomermanage').css({display: ''});
     $('#admincarmanage').css({display: 'none'});
     $('#paymentAndReturn').css({display: 'none'});
@@ -147,11 +150,17 @@ function loadAdminCustomerManager() {
 
 
 function loadAdminDashboard() {
+    loadNumberOfUsersForDash();
+    loadNumberOfBookingsPerToday();
+    loadNumberOfAvailableAndReserved();
+    loadActiveBookingsAsToday();
+    loadAvailableAndOccupiesDrivers();
+    loadCarThatNeedMaintainance();
     $('#admincustomermanage').css({display: 'none'});
     $('#admincarmanage').css({display: 'none'});
     $('#paymentAndReturn').css({display: 'none'});
     $('#bookingDetailManage').css({display: 'none'})
-    $('#AdminDashboard').css({display: ''})
+    $('#adminDashboard').css({display: ''})
 
 }
 
@@ -160,6 +169,7 @@ function loadAdminCarManager() {
     $('#admincarmanage').css({display: ''});
     $('#paymentAndReturn').css({display: 'none'})
     $('#bookingDetailManage').css({display: 'none'})
+    $('#adminDashboard').css({display: 'none'})
     loadCarListing();
 }
 
@@ -215,7 +225,7 @@ function loadpendingBookingsToAdminPanel() {
     $('#admincarmanage').css({display: 'none'})
     $('#paymentAndReturn').css({display: 'none'})
     $('#bookingDetailManage').css({display: ''})
-
+    $('#adminDashboard').css({display: 'none'})
 
     $('#pendingbookingtbody').children().remove();
 
@@ -720,6 +730,7 @@ function loadpendingReturnAndPaymentToAdminPanel() {
     $('#admincarmanage').css({display: 'none'})
     $('#paymentAndReturn').css({display: ''})
     $('#bookingDetailManage').css({display: 'none'})
+    $('#adminDashboard').css({display: 'none'});
 }
 
 
@@ -858,6 +869,88 @@ aria-hidden="true">
 
             }
 
+        }
+    });
+}
+
+
+function loadNumberOfUsersForDash() {
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/customer/customercount',
+        type: 'get',
+        contentType: 'application/json',
+        success: function (res) {
+            $('#dashUserCount').children().remove();
+            $('#dashUserCount').append(`<h3>${res.data}</h3>`)
+        }
+    });
+}
+
+
+function loadNumberOfBookingsPerToday() {
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/booking/bookingcount',
+        type: 'get',
+        contentType: 'application/json',
+        success: function (res) {
+            $('#dashBookingCount').children().remove();
+            $('#dashBookingCount').append(`<h3>${res.data}</h3>`)
+        }
+    });
+}
+
+
+function loadNumberOfAvailableAndReserved() {
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/car/availableAndReserved',
+        type: 'get',
+        contentType: 'application/json',
+        success: function (res) {
+            console.log("Available");
+            $('#dashAvlAndResCount').children().remove();
+            $('#dashAvlAndResCount').append(`<h6>Available : ${res.data[0]}</h6>`)
+            $('#dashAvlAndResCount').append(`<h6>Reserved : ${res.data[1]}</h6>`)
+        }
+    });
+}
+
+
+function loadActiveBookingsAsToday() {
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/booking/activebookingcount',
+        type: 'get',
+        contentType: 'application/json',
+        success: function (res) {
+            console.log("Response " + res);
+            $('#dashActveBooking').children().remove();
+            $('#dashActveBooking').append(`<h3>${res.data}</h3>`)
+        }
+    });
+}
+
+
+function loadAvailableAndOccupiesDrivers() {
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/driver/availableAndOccupied',
+        type: 'get',
+        contentType: 'application/json',
+        success: function (res) {
+            $('#dashAvlAndOccupiedDriver').children().remove();
+            $('#dashAvlAndOccupiedDriver').append(`<h6>Available : ${res.data[0]}</h6>`)
+            $('#dashAvlAndOccupiedDriver').append(`<h6>Occupied : ${res.data[1]}</h6>`)
+        }
+    });
+}
+
+
+function loadCarThatNeedMaintainance() {
+    $.ajax({
+        url: 'http://localhost:8080/demo/api/v1/car/countcarsformaintainance',
+        type: 'get',
+        contentType: 'application/json',
+        success: function (res) {
+            $('#dashCrsThatNeedMaintainace').children().remove();
+            $('#dashCrsThatNeedMaintainace').append(`<h3>${res.data}</h3>`)
         }
     });
 }

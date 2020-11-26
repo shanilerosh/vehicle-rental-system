@@ -110,4 +110,18 @@ public class CarController {
         List<CarDTO> allCars = carService.searchAllTypeCarsWhenTyping(selected, custInput);
         return new ResponseEntity(new StandardResponse(200, "Success", allCars), HttpStatus.CREATED);
     }
+
+    @GetMapping(path = "/availableAndReserved")
+    public ResponseEntity findAvlbleAndReserver() {
+        ArrayList<Integer> list = carService.getAvailbleAndReserved();
+        return new ResponseEntity(new StandardResponse(200, "Success", list), HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/countcarsformaintainance")
+    public ResponseEntity findCarsForMain() {
+        Integer count = carService.findCarsForMaintainance();
+        return new ResponseEntity(new StandardResponse(200, "Success", count), HttpStatus.CREATED);
+    }
+
+
 }

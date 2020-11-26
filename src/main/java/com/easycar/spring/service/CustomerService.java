@@ -16,4 +16,6 @@ public interface CustomerService {
     void updateCustomer(Object[] custArr);
 
     void updateContactOnly(String email, String contact);
+
+    int getCustomerCount();
 }

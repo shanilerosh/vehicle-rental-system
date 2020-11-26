@@ -314,4 +314,20 @@ public class CarServiceImpl implements CarService {
         return mapper.map(list, new TypeToken<List<CarDTO>>() {
         }.getType());
     }
+
+    @Override
+    public ArrayList<Integer> getAvailbleAndReserved() {
+        ArrayList<Integer> list = new ArrayList<>();
+        Integer availabe = carRepo.countByCarState("Availabe");
+        Integer occupied = carRepo.countByCarState("Occupied");
+        list.add(availabe);
+        list.add(occupied);
+        return list;
+    }
+
+    @Override
+    public Integer findCarsForMaintainance() {
+        Integer integer = carRepo.countAllByMilegeGreaterThan(5000);
+        return integer;
+    }
 }

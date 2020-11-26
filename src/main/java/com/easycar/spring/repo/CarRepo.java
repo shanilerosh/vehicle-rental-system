@@ -32,4 +32,8 @@ public interface CarRepo extends JpaRepository<Car, Integer> {
      ArrayList<Car> findAllByFuelTypeStartingWith(String fuel);
 
      ArrayList<Car> findAllByTransmissionTypeStartingWith(String brand);
+
+     Integer countByCarState(String state);
+
+     Integer countAllByMilegeGreaterThan(int milage);
 }

@@ -278,4 +278,16 @@ public class BookingServiceImpl implements BookingService {
         }
         return null;
     }
+
+    @Override
+    public Integer getBookingCountAsAt(LocalDate now) {
+        Integer integer = bookingDetailsRepo.countByDateOkBooking(Date.valueOf(now));
+        return integer;
+    }
+
+    @Override
+    public Integer getActiveBooking(String open) {
+        System.out.println("Open " + open);
+        return bookingDetailsRepo.countByStatus(open);
+    }
 }

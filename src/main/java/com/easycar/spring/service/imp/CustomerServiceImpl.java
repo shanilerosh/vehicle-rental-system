@@ -155,5 +155,10 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepo.save(customer);
     }
 
+    @Override
+    public int getCustomerCount() {
+        return (int) customerRepo.count();
+    }
+
 }
 

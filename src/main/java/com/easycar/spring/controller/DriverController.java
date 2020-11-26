@@ -31,7 +31,13 @@ public class DriverController {
         System.out.println("Inside driver controller");
         ArrayList<DriverDTO> driverName = driverService.findDriverNamesExcept(except);
         System.out.println("Inside");
-        return new ResponseEntity(new StandardResponse(200,"Success",driverName), HttpStatus.CREATED);
+        return new ResponseEntity(new StandardResponse(200, "Success", driverName), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/availableAndOccupied")
+    public ResponseEntity getDriver() {
+        ArrayList<Integer> avlOcc = driverService.countAvlAndOccupied();
+        return new ResponseEntity(new StandardResponse(200, "Success", avlOcc), HttpStatus.CREATED);
     }
 }
 

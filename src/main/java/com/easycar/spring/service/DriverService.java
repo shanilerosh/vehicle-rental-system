@@ -6,5 +6,8 @@ import java.util.ArrayList;
 
 public interface DriverService {
     void addDriver(DriverDTO driverDTO);
+
     ArrayList<DriverDTO> findDriverNamesExcept(String except);
+
+    ArrayList<Integer> countAvlAndOccupied();
 }

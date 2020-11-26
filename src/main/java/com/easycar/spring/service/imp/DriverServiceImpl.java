@@ -34,11 +34,21 @@ public class DriverServiceImpl implements DriverService {
         ArrayList<DriverDTO> driverDTOS = new ArrayList<>();
         for (Driver driver : all) {
             System.out.println("Isde loop");
-            if(!driver.getDid().equals(except)){
+            if (!driver.getDid().equals(except)) {
                 System.out.println("Insd if block");
-                driverDTOS.add(new DriverDTO(driver.getDid(),driver.getDriverName(),driver.getDriverStatus()));
+                driverDTOS.add(new DriverDTO(driver.getDid(), driver.getDriverName(), driver.getDriverStatus()));
             }
         }
         return driverDTOS;
+    }
+
+    @Override
+    public ArrayList<Integer> countAvlAndOccupied() {
+        ArrayList<Integer> list = new ArrayList<>();
+        Integer open = driverRepo.countAllByDriverStatus("open");
+        Integer occupied = driverRepo.countAllByDriverStatus("occupied");
+        list.add(open);
+        list.add(occupied);
+        return list;
     }
 }

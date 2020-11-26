@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,12 +26,6 @@ public class BookingController {
 
     @Autowired
     private BookingService bookingService;
-
-    @Autowired
-    BookingDetailsRepo repo;
-
-    @Autowired
-    DriverRepo driverRepo;
 
     @PostMapping(path = "/bookingdetail")
     public ResponseEntity addBooking(@RequestParam("bcktLocation") String bcktLocation, @RequestParam("bcktPckUp") String bcktPckUp,
@@ -112,6 +108,19 @@ public class BookingController {
     public ResponseEntity getOpenBookings(@PathVariable String selection, @PathVariable String value) {
         List<BookingPendingDTO> bookingOpen = bookingService.getOpenBookingsForReturn(selection, value);
         return new ResponseEntity(new StandardResponse(200, "Success", bookingOpen), HttpStatus.CREATED);
+    }
+
+
+    @GetMapping(path = "/bookingcount")
+    public ResponseEntity getBookingCount() {
+        Integer count = bookingService.getBookingCountAsAt(LocalDate.now());
+        return new ResponseEntity(new StandardResponse(200, "Success", count), HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/activebookingcount")
+    public ResponseEntity getActiveBookingCount() {
+        Integer count = bookingService.getActiveBooking("open");
+        return new ResponseEntity(new StandardResponse(200, "Success", count), HttpStatus.CREATED);
     }
 
 

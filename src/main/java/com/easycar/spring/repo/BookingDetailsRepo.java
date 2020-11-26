@@ -12,15 +12,19 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface BookingDetailsRepo extends JpaRepository<BookingDetail, Integer> {
-    public List<BookingDetail> getAllByCustomerAndStatus(Customer customer, String status);
+    List<BookingDetail> getAllByCustomerAndStatus(Customer customer, String status);
 
-    public List<BookingDetail> getAllByStatus(String status);
+    List<BookingDetail> getAllByStatus(String status);
 
-    public List<BookingDetail> findAllByRqrdDateTimeGreaterThanEqualAndDateOfReturn(Date from, Date to);
+    List<BookingDetail> findAllByRqrdDateTimeGreaterThanEqualAndDateOfReturn(Date from, Date to);
 
-    public List<BookingDetail> findAllByCar(Car car);
+    List<BookingDetail> findAllByCar(Car car);
 
-    public List<BookingDetail> findAllByStatusAndDetailIdStartingWith(String status, Integer val);
+    List<BookingDetail> findAllByStatusAndDetailIdStartingWith(String status, Integer val);
 
-    public List<BookingDetail> findAllByCustomerAndStatus(Customer customer, String status);
+    List<BookingDetail> findAllByCustomerAndStatus(Customer customer, String status);
+
+    Integer countByDateOkBooking(Date dte);
+
+    Integer countByStatus(String status);
 }

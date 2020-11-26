@@ -35,15 +35,68 @@
 
         <div id="adminDashboard">
             <div class="row">
-                <div class="col-5">
-                    <div class="card text-white bg-primary mb-3 m" style="min-width: 16rem">
+                <div class="col-4">
+                    <div class="card text-white bg-info mb-3"
+                         style="max-width: 18rem;  min-height :12rem;background-color: rgb(255,84,85)">
                         <div class="card-body">
-                            <h5 class="card-title">Primary card title</h5>
+                            <h5 class="card-title">Our All Registered Users</h5>
+                            <hr/>
+                            <h5 class="card-title" id="dashUserCount"></h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="card text-white bg-danger mb-3"
+                         style="max-width: 18rem; min-height :12rem; background-color: #67C2EF">
+                        <div class="card-body">
+                            <h5 class="card-title">Total booking as per Today</h5>
+                            <hr/>
+                            <h5 class="card-title" id="dashBookingCount"></h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card text-white bg-warning mb-3"
+                         style="max-width: 18rem; min-height :12rem; background-color: #FABB3D">
+                        <div class="card-body">
+                            <h5 class="card-title">Available And Reserved Cars</h5>
+                            <hr/>
+                            <h5 class="card-title" id="dashAvlAndResCount"></h5>
 
                         </div>
                     </div>
                 </div>
 
+                <div class="col-4">
+                    <div class="card text-white bg-success mb-3" style="max-width: 18rem; min-height :12rem">
+                        <div class="card-body">
+                            <h5 class="card-title">Active booking for the day</h5>
+                            <hr/>
+                            <h5 class="card-title" id="dashActveBooking"></h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="card text-white mb-3"
+                         style="max-width: 18rem; background-color: #ffc107; min-height :12rem">
+                        <div class="card-body">
+                            <h5 class="card-title">Available & Occupied Drivers</h5>
+                            <hr/>
+                            <h5 class="card-title" id="dashAvlAndOccupiedDriver"></h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card text-white bg-primary mb-3" style="max-width: 18rem; min-height :12rem">
+                        <div class="card-body">
+                            <h5 class="card-title">Cars that need maintainance</h5>
+                            <hr/>
+                            <h5 class="card-title" id="dashCrsThatNeedMaintainace"></h5>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
