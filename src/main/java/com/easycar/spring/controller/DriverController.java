@@ -2,6 +2,7 @@ package com.easycar.spring.controller;
 
 import com.easycar.spring.dto.CarDTO;
 import com.easycar.spring.dto.DriverDTO;
+import com.easycar.spring.dto.DriverScheduleDTO;
 import com.easycar.spring.service.DriverService;
 import com.easycar.spring.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,7 @@ public class DriverController {
         ArrayList<Integer> avlOcc = driverService.countAvlAndOccupied();
         return new ResponseEntity(new StandardResponse(200, "Success", avlOcc), HttpStatus.CREATED);
     }
+
+
 }
 

@@ -9,6 +9,15 @@ let altDriver = '';
 let selectedCarForSchdule = '';
 
 
+// setTimeout(function () {
+//     const item = sessionStorage.getItem("adminEmail");
+//     if(item==null){
+//         alert("Error.Please login again");
+//     }
+//
+// },300)
+
+
 // function loadCustomersStatus() {
 //     $('#admincustomermanage').css({display: ''})
 //     loadAllCustomer();
@@ -174,6 +183,7 @@ function loadAdminCarManager() {
     $('#adminDashboard').css({display: 'none'})
     $('#carSchedule').css({display: 'none'})
     loadCarListing();
+
 }
 
 function loadCarSchedule() {
@@ -744,13 +754,13 @@ function loadpendingReturnAndPaymentToAdminPanel() {
     $('#paymentAndReturn').css({display: ''})
     $('#bookingDetailManage').css({display: 'none'})
     $('#adminDashboard').css({display: 'none'});
+    $('#admin').css({display: 'none'});
 }
 
 
 function loadBookingDetailToReturn() {
     const adminInput = $('#paymentReturnBidText').val().trim();
     const adminSelection = $('#paymentReturnSelection').val();
-    ``
     console.log(adminSelection);
     if (adminInput !== '') {
         $.ajax({
@@ -878,7 +888,7 @@ aria-hidden="true">
                 `)
 
                 $('#modalCart').modal('show');
-
+                loadBookingDetailToReturn();
 
             }
 

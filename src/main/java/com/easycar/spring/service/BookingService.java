@@ -30,4 +30,6 @@ public interface BookingService {
     Integer getBookingCountAsAt(LocalDate now);
 
     Integer getActiveBooking(String open);
+
+    ArrayList<DriverScheduleDTO> getIndividualSch(String did);
 }

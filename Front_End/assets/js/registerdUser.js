@@ -52,15 +52,16 @@ function loadCarForRegsitered() {
 }
 
 
-let crid='';
-let registration='';
-let carBrand='';
-let color='';
-let dlyprice='';
-let mntlyprice='';
-let numberOfPssng='';
-let carName=''
-let depAmount=100;
+let crid = '';
+let registration = '';
+let carBrand = '';
+let color = '';
+let dlyprice = '';
+let mntlyprice = '';
+let numberOfPssng = '';
+let carName = ''
+let depAmount = '';
+
 function viewDetail(evt) {
     const selectedReg = evt.parentElement.children[1].innerHTML;
     $.ajax({
@@ -68,21 +69,22 @@ function viewDetail(evt) {
         type: 'get',
         contentType: 'application/json',
         success: function (res) {
-            console.log(res.data.reg);
-            crid=res.data.reg;
-            registration=res.data.registrationNumb;
-            numberOfPssng=res.data.nmberOfPssngers;
-            carBrand=res.data.brand
-            carName=res.data.name;
-            color=res.data.brand;
-            dlyprice=res.data.dlyRate;
-            mntlyprice=res.data.mnthlyRate;
+            console.log(res.data.deposit);
+            crid = res.data.reg;
+            registration = res.data.registrationNumb;
+            numberOfPssng = res.data.nmberOfPssngers;
+            carBrand = res.data.brand
+            carName = res.data.name;
+            color = res.data.brand;
+            depAmount = res.data.deposit;
+            dlyprice = res.data.dlyRate;
+            mntlyprice = res.data.mnthlyRate;
             $('#model').children().remove();
             console.log(res.data.frntImg);
-            const frntImg=res.data.frntImg.slice(90,res.data.frntImg.length);
-            const bckImg=res.data.bckImg.slice(90,res.data.bckImg.length);
-            const sideImg=res.data.sideImg.slice(90,res.data.sideImg.length);
-            const interiorImge=res.data.frntImg.slice(90,res.data.interiorImge.length);
+            const frntImg = res.data.frntImg.slice(90, res.data.frntImg.length);
+            const bckImg = res.data.bckImg.slice(90, res.data.bckImg.length);
+            const sideImg = res.data.sideImg.slice(90, res.data.sideImg.length);
+            const interiorImge = res.data.frntImg.slice(90, res.data.interiorImge.length);
             $('#model').append(`
 <div class="modal fade small" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -302,7 +304,7 @@ function renderCarsForRegisteredUser() {
     <small>${resp.registrationNumb}</small>
     <p class="card-text">${resp.brand}</p>
     <p class="card-text">${resp.carType}</p>
-    <button class="btn btn-primary" type="button" onclick="viewDetail(this)">Go somewhere</button>
+    <button class="btn btn-primary" type="button" onclick="viewDetail(this)">Details</button>
   </div>
 </div></div>`)
                 }
@@ -359,15 +361,20 @@ function viewDetailOfBookingMgt(val) {
         success: function (res) {
             console.log(res.data);
             if (res.data.status === "pending") {
+                $('#bookingDetailOpenStatusDes').children().remove();
                 $('#bookingDetailPendingStatus').modal('show');
-            } else if (res.data.status === "pending") {
+                $('#bookingDetailOpenStatusDes').append(`<p>Hold on your request is still pending</p>`);
+            } else if (res.data.status === "open") {
                 $('#bookingDetailOpenStatusDes').children().remove();
                 $('#bookingDetailOpenStatus').modal('show');
                 $('#bookingDetailOpenStatusDes').append(`<p>
                 You booking Detail has been accepted.${res.data.driverId == "No Driver" ? "You can visit us to get the car" : "You driver Details are : "}
-                ${res.data.driverId !== "No Driver" ? "Driver ID :" + res.data.driverId : ""}  
+                ${res.data.driverId !== "No Driver" ? "Driver ID :" + res.data.driverId : ""
+
+
+                }  
 </p>`)
-            } else if (res.data.status === "opc") {
+            } else if (res.data.status === "denied") {
                 $('#bookingDetailDenyStatusDes').children().remove();
                 $('#bookingDetailDenyStatus').modal('show');
                 $('#bookingDetailDenyStatusDes').append(`<p>This reason for the denial is ${res.data.remarks}. You deposit will be refunded back to your account</p>`)
@@ -435,7 +442,7 @@ function editProfileSettings() {
     isEditable = true;
     let mybookingList = '';
     $.ajax({
-        url: 'http://localhost:8080/demo/api/v1/booking/getonstatus/' + customerEmail + '/' + 'pending',
+        url: 'http://localhost:8080/demo/api/v1/booking/getonstatus/' + customerEmail + '/' + 'open',
         type: 'get',
         contentType: 'application/json',
         success: function (res) {

@@ -93,14 +93,16 @@ function savecustomer() {
   <strong>Success ☺ </strong> You have successfully Logged in
 </div>`)
 
-                        if(res.data.role==="customer"){
+                        if (res.data.role === "customer") {
                             sessionStorage.setItem("custEmail", res.data.partyId)
                             window.location.href = "registereduserpage.html"
+                        } else if (res.data.role === "Admin") {
+                            sessionStorage.setItem("adminEmail", res.data.partyId)
+                            window.location.href = "AdminPanel.html"
+                        } else if (res.data.role == "Driver") {
+                            sessionStorage.setItem("driverId", res.data.partyId)
+                            window.location.href = "Driver.html"
                         }
-
-
-
-
                     }
                 }
          })

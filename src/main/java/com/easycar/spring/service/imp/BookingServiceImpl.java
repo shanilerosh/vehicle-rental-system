@@ -187,8 +187,12 @@ public class BookingServiceImpl implements BookingService {
     public void finalizeBooking(String bid, String did) {
         Optional<BookingDetail> byId = bookingDetailsRepo.findById(Integer.parseInt(bid));
         BookingDetail bookingDetail = byId.get();
-        System.out.println("here");
+        Car car = bookingDetail.getCar();
+        car.setCarState("Occupied");
         Driver one = driverRepo.getOne(did);
+        one.setDriverStatus("occupied");
+        driverRepo.save(one);
+        carRepo.save(car);
         bookingDetail.setDriver(one);
         bookingDetail.setStatus("open");
         BookingDetail save = bookingDetailsRepo.save(bookingDetail);
@@ -198,6 +202,9 @@ public class BookingServiceImpl implements BookingService {
     public void finalizeBookingWithoutDriver(String bid) {
         Optional<BookingDetail> byId = bookingDetailsRepo.findById(Integer.parseInt(bid));
         BookingDetail bookingDetail = byId.get();
+        Car car = bookingDetail.getCar();
+        car.setCarState("occupied");
+        carRepo.save(car);
         bookingDetail.setStatus("open");
         bookingDetailsRepo.save(bookingDetail);
     }
@@ -289,5 +296,21 @@ public class BookingServiceImpl implements BookingService {
     public Integer getActiveBooking(String open) {
         System.out.println("Open " + open);
         return bookingDetailsRepo.countByStatus(open);
+    }
+
+    @Override
+    public ArrayList<DriverScheduleDTO> getIndividualSch(String did) {
+        ArrayList<DriverScheduleDTO> list = new ArrayList<>();
+        Driver driver = driverRepo.getOne(did);
+        List<BookingDetail> open = bookingDetailsRepo.findAllByDriverAndStatus(driver, "open");
+
+        for (BookingDetail bd : open) {
+            if (bd.getDriver() != null) {
+                Driver tmp = bd.getDriver();
+                list.add(new DriverScheduleDTO(tmp.getDid(), tmp.getDriverName(), bd.getRqrdDateTime().toString(), bd.getDateOfReturn().toString(), bd.getRqrdLocation()));
+            }
+        }
+
+        return list;
     }
 }

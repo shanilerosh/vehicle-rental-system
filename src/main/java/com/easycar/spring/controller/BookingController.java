@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -118,6 +119,12 @@ public class BookingController {
     public ResponseEntity getActiveBookingCount() {
         Integer count = bookingService.getActiveBooking("open");
         return new ResponseEntity(new StandardResponse(200, "Success", count), HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/driverSch/{did}")
+    public ResponseEntity getActiveBookingCount(@PathVariable String did) {
+        ArrayList<DriverScheduleDTO> list = bookingService.getIndividualSch(did);
+        return new ResponseEntity(new StandardResponse(200, "Success", list), HttpStatus.CREATED);
     }
 
 }

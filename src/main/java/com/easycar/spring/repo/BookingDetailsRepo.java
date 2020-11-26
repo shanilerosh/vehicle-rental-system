@@ -27,4 +27,6 @@ public interface BookingDetailsRepo extends JpaRepository<BookingDetail, Integer
     Integer countByDateOkBooking(Date dte);
 
     Integer countByStatus(String status);
+
+    List<BookingDetail> findAllByDriverAndStatus(Driver driver, String status);
 }
