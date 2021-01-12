@@ -13,8 +13,9 @@ setTimeout(function () {
     const item = sessionStorage.getItem("adminEmail");
     if (item == null) {
         alert("Error.Please login again");
+
     }
-}, 300)
+}, 100)
 
 
 // function loadCustomersStatus() {

@@ -16,14 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@EnableScheduling
 @CrossOrigin
 @RequestMapping("api/v1/booking")
 public class BookingController {
 
     @Autowired
     private BookingService bookingService;
-
 
     @PostMapping(path = "/bookingdetail")
     public ResponseEntity addBooking(@RequestParam("bcktLocation") String bcktLocation, @RequestParam("bcktPckUp") String bcktPckUp,

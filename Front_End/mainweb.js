@@ -8,11 +8,11 @@ function loadCar() {
         contentType: 'application/json',
         success: function (res) {
             console.log(res);
-            for (let resp of res.data) {
-                console.log(resp.frntImg);
-                const imgSrc = resp.frntImg.slice(90, resp.frntImg.length);
-                console.log(imgSrc);
-                $('#carsToMainPage').append(`<div class="card ml-3 mt-4" style="width: 18rem;">
+       for (let resp of res.data) {
+           console.log(resp.frntImg);
+           const imgSrc = resp.frntImg.slice(90, resp.frntImg.length);
+           console.log(imgSrc);
+           $('#carsToMainPage').append(`<div class="card ml-3 mt-4" style="width: 18rem;">
   <img class="card-img-top" src="${imgSrc}" alt="Card image cap" style="width: 18rem; height: 15rem">
   <div class="card-body">
     <p class="card-text">Car Registration : ${resp.registrationNumb}</p>

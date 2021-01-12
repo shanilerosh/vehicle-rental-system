@@ -26,6 +26,7 @@ public class CustomerController {
 
     @PostMapping(path = "/savecustomer")
     public ResponseEntity addCustomer(@RequestParam("doc") MultipartFile file, @RequestParam("email") String email,
+
                                       @RequestParam("address") String address, @RequestParam("name") String name, @RequestParam("password") String password) {
         Object[] custArr = {file, email, address, name, password};
         service.saveCustomer(custArr);
